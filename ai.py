@@ -3,7 +3,8 @@ from __future__ import annotations
 import json
 import os
 from typing import Any, Dict, Optional
-
+from __future__ import annotations
+from dotenv import load_dotenv
 from services.plan import generate_fallback_plan, default_motivational_phrase
 
 try:
@@ -11,11 +12,16 @@ try:
 except Exception:
     genai = None
 
+load_dotenv()
 
 def gemini_client() -> Optional[Any]:
     if genai is None:
         return None
-    api_key = "(Sua_Chave_Aqui)"  # Chave hardcoded
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        print("Erro: API Key não encontrada no arquivo .env")
+        return None
+
     try:
         return genai.Client(api_key=api_key)
     except Exception:
