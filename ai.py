@@ -1,11 +1,9 @@
 from __future__ import annotations
-
 import json
 import os
 from typing import Any, Dict, Optional
-from __future__ import annotations
 from dotenv import load_dotenv
-from services.plan import generate_fallback_plan, default_motivational_phrase
+from plan import generate_fallback_plan, default_motivational_phrase
 
 try:
     from google import genai
