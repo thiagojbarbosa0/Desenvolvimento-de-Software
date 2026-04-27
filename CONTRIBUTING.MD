@@ -27,4 +27,4 @@ ORGANIZAÇÃO DO PROJETO
 - Se for editar algo que outra pessoa já começou, por favor antes pra não dar conflito
 
 OBS
-- Se der conflito no Git, não sair resolvendo sozinho(a) — chamar alguém do grupo
+- Se der conflito no Git, não sair resolvendo sozinho, chamar alguém do grupo
