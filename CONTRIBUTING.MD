@@ -1,29 +1,30 @@
 
 # Guia de Contribuição
 
-Este repositório é um trabalho em grupo, então a ideia é manter tudo organizado pra evitar conflito e retrabalho.
+Como este repositório é um trabalho em grupo, o objetivo central é manter tudo organizado, e assim evitar conflitos e retrabalho.
 
-## 🌿 Como vamos usar as branches
-- Ninguém mexe direto na main
-- Sempre criar uma branch nova antes de começar qualquer tarefa
-- Padrão que vamos usar:
+USO DAS BRANCHES: 
+- Não alterar diretamente o main
+- Sempre criar uma branch nova antes de começar as tarefas
+- Padrão a ser utilizado:
   - feature/login, feature/cadastro
   - fix/erro-login, fix/botao-quebrado
-- Quando terminar, subir tudo na sua branch
+- Ao terminar, subir tudo na sua branch
 
-## 🔁 Pull Requests (PR)
+Pull Requests (PR)
 - Nada vai direto pra main, tudo passa por PR
 - Fazer PR pequeno (uma funcionalidade por vez)
 - No PR, explicar de forma simples o que foi feito (ex: "criei tela de login" ou "corrigi erro no botão")
 
-## 👀 Revisão
-- Pelo menos 1 pessoa do grupo precisa olhar antes de aprovar
-- Quem for revisar, testar minimamente pra ver se não quebrou nada
+REVISÃO
+- Pelo menos 1 membro do grupo precisa 
+revisar antes de aprovar
+- Para quem for o revisor, é preciso testar minimamente pra ver se não houve quebra no código
 
-## 📌 Organização do projeto
+ORGANIZAÇÃO DO PROJETO
 - Evitar subir muita coisa de uma vez
-- Tentar manter nomes de arquivos e funções organizados
-- Se for mexer em algo que outra pessoa já começou, avisar antes pra não dar conflito
+- Manter nomes de arquivos e funções organizados
+- Se for editar algo que outra pessoa já começou, por favor antes pra não dar conflito
 
-## ⚠️ Observação
-- Se der conflito no Git, não sair resolvendo sozinho(a) — chama alguém do grupo
+OBS
+- Se der conflito no Git, não sair resolvendo sozinho(a) — chamar alguém do grupo
