@@ -1,0 +1,92 @@
+/* 1. A Caixa Principal do Formulário */
+#formulario_login {
+    background-color: #FAFAFA; 
+    width: 400px; 
+    margin: 40px auto 0 auto; 
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+    border: 1px solid #ddd;
+    
+    display: flex;
+    flex-direction: column;
+}
+
+/* 2. O Cabeçalho (Título e a Linha) */
+#formulario_login h2 {
+    text-align: center;
+    font-size: 32px;
+    font-weight: normal;
+    color: #444;
+    margin: 0;
+    padding: 20px 0;
+    border-bottom: 2px solid #ccc;
+}
+
+/* 3. Espaçamento interno do formulário */
+#formulario_login form {
+    padding: 30px; 
+    display: flex;
+    flex-direction: column;
+    gap: 20px; 
+}
+
+/* 4. Textos acima dos inputs */
+#formulario_login p {
+    margin: 0 0 5px 0; 
+    font-size: 18px;
+    color: #333;
+}
+
+/* 5. Os Campos de Digitação (Inputs) */
+.input_padrao {
+    width: 100%; 
+    box-sizing: border-box; 
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background-color: #f2f2f2;
+    font-size: 16px;
+}
+
+/* 6. O Link "Esqueci minha senha" */
+#esqueci_senha {
+    text-align: right;
+    color: #3E8E41; 
+    font-size: 14px !important;
+    font-weight: bold;
+    margin-top: 8px !important;
+    cursor: pointer;
+}
+
+/* 7. A Div dos Botões */
+.acoes {
+    display: flex;
+    flex-direction: column; 
+    gap: 15px; 
+    margin-top: 10px;
+}
+
+/* Estilo Base dos Botões */
+.acoes button {
+    width: 100%;
+    padding: 15px;
+    font-size: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+    transition: 0.2s; 
+}
+
+/* Botão "Entrar" (Primeiro botão) */
+.acoes button:nth-child(1) {
+    background-color: #8CC689; 
+    color: #333;
+    border: 1px solid #78b075;
+}
+
+/* Botão "Criar Conta" (Segundo botão) */
+.acoes button:nth-child(2) {
+    background-color: white;
+    color: #407d42; 
+    border: 1px solid #ccc;
+}
