@@ -1,16 +1,44 @@
-# React + Vite
+Frontend - Aplicação React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+COMO RODAR O PROJETO
 
-Currently, two official plugins are available:
+Pré-requisitos:
+Node.js v18 ou superior
+npm ou yarn
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Instalação:
+cd frontend
+npm install
 
-## React Compiler
+Rodar em desenvolvimento:
+npm run dev
+Acesse: http://localhost:5173
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Build para produção:
+npm run build
+npm run preview
 
-## Expanding the ESLint configuration
+ESTRUTURA DAS TELAS
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Rota / - Arquivo: src/pages/TelaInicial.jsx - Descrição: Home / Landing Page
+Rota /login - Arquivo: src/pages/TelaLogin.jsx - Descrição: Tela de Login  
+Rota /dashboard - Arquivo: src/pages/TelaPrincipal.jsx - Descrição: Dashboard + Chatbot
+
+CONEXÃO COM BACKEND
+
+A URL base da API está em src/services/api.js:
+
+const api = axios.create({
+  baseURL: 'http://localhost:8000' // MOCK - trocar quando back subir
+});
+
+Status atual: Usando dados mockados. Aguardando rotas do backend para integração real.
+
+TECNOLOGIAS
+React 18
+Vite
+Axios
+React Router
+
+BRANCH
+Este código está na branch feature/integracao-login
