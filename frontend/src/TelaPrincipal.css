@@ -1,0 +1,251 @@
+/* ======================================================
+   ESTRUTURA PRINCIPAL (O PATRIARCA)
+====================================================== */
+.limitador_tags {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ======================================================
+   CABEÇALHO E LOGO
+====================================================== */
+header {
+    display: flex;
+    align-items: center;
+}
+
+.caixa_cabecalho {
+    border: 1px solid #ccc;
+    height: 98px;
+    width: 100%;
+    border-radius: 0px 0px 0px 20px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px; 
+}
+
+h1 {
+    font-family: 'Inika-Regular', serif;
+    font-size: 40px;
+    font-weight: normal;
+    margin: 0; /* Impede que margens invisíveis empurrem o layout */
+}
+
+/* ======================================================
+   CORPO (DIVIDE A TELA EM ESQUERDA E DIREITA)
+====================================================== */
+.corpo-layout {
+    display: flex;
+    flex: 1; 
+}
+
+/* ======================================================
+   BARRA LATERAL (MENU ESQUERDO)
+====================================================== */
+.barra_lateral {
+    width: 344px;
+    height: 100%;
+    background-color: white;
+    border-right: 1px solid #ddd;
+    padding-top: 20px;
+    overflow-y: auto; 
+}
+
+.barra_lateral ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.barra_lateral li {
+    display: flex;
+    align-items: center;
+    padding: 15px 25px;
+    cursor: pointer;
+    transition: 0.2s;
+    color: #444;
+    font-size: 24px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.barra_lateral .icone {
+    margin-right: 15px;
+    font-size: 28px;
+}
+
+.barra_lateral li:hover {
+    background-color: #f5f5f5;
+}
+
+.barra_lateral li.ativo {
+    background-color: #D1E7D1; 
+    color: #3E5F3E; 
+    border-radius: 0 10px 10px 0;
+    margin-right: 10px;
+    font-weight: 500;
+}
+
+/* ======================================================
+   ÁREA DO CHAT (LADO DIREITO) - A MÁGICA ACONTECE AQUI
+====================================================== */
+.area-do-chat {
+    flex: 1; 
+    display: flex;
+    flex-direction: column; 
+    background-color: #fafafa; 
+}
+
+.historico-mensagens {
+    flex: 1; 
+    overflow-y: auto;
+    padding: 20px;
+}
+
+/* ======================================================
+   INPUT DE MENSAGEM (RODAPÉ DO CHAT)
+====================================================== */
+.caixa-de-mensagem {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 10px 15px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+    margin: 20px; 
+}
+
+.campo-digitacao {
+    flex: 1;
+    border: none;
+    outline: none; 
+    resize: none; 
+    font-size: 16px;
+    font-family: inherit;
+    color: #555;
+    background: transparent;
+    padding-top: 4px; 
+}
+
+.botao-anexo {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #888;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.botao-anexo:hover {
+    color: #333;
+}
+
+/* ======================================================
+   BALÕES DE MENSAGEM (CHAT)
+====================================================== */
+.mensagem-bot {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    gap: 15px; 
+    padding-top: 10px;
+}
+
+
+.avatar-bot {
+    width: 50px;
+    height: 50px;
+    background-color: #D1E7D1; 
+    border-radius: 50%; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    flex-shrink: 0; 
+}
+
+/* A caixa branca com o texto */
+.balao-mensagem {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 15px 20px;
+    border-radius: 8px; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 18px;
+    color: #333;
+    position: relative; 
+    max-width: 80%; 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
+}
+
+/* O "Rabicho" do balão (A borda cinza do triângulo) */
+.balao-mensagem::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: -11px;
+    border-style: solid;
+    border-width: 10px 11px 10px 0; 
+    border-color: transparent #ccc transparent transparent;
+}
+
+
+/* ======================================================
+   BALÃO DO BOT (ESQUERDA - BRANCO)
+====================================================== */
+.balao-bot {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 15px 20px;
+    border-radius: 8px; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 18px;
+    color: #333;
+    position: relative; 
+    max-width: 80%; 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
+}
+
+/* O rabicho do bot (mesmo que você já tinha) */
+.balao-bot::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: -11px;
+    border-style: solid;
+    border-width: 10px 11px 10px 0;
+    border-color: transparent #ccc transparent transparent;
+}
+
+.balao-bot::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: -9px;
+    border-style: solid;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent white transparent transparent;
+}
+
+/* ======================================================
+   BALÃO DO USUÁRIO (DIREITA - VERDE)
+====================================================== */
+.mensagem-usuario {
+    display: flex;
+    justify-content: flex-end; /* Joga a mensagem toda pra direita */
+    margin-bottom: 20px;
+}
+
+.balao-usuario {
+    background-color: #D1E7D1; /* Um verdezinho pra diferenciar do bot */
+    padding: 15px 20px;
+    border-radius: 12px 12px 0px 12px; /* Deixa o canto inferior direito reto (estilo WhatsApp) */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 18px;
+    color: #333;
+    max-width: 80%; 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
+}
+

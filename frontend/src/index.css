@@ -1,0 +1,79 @@
+/*tirando margem chata de todas as telas e colocando o fundo na cor branca*/
+body{
+  height: 100vh;
+  width: 100vw;
+  background-color: #F5F5F5;
+  margin: 0;
+  padding: 0;
+}
+/******************************************************************************************************************************/
+
+/*estilizando a caixa verde e o texto do logo*/
+#logo{
+  display: flex;
+}
+
+#caixa_logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 345px;
+  height: 98px;
+  background-color:#5FB65C;
+  border-radius: 0px 0px 20px 0px;
+  border: 1px solid black;
+  
+}
+
+#logo_texto {
+  font-family: 'Informal Roman';
+  font-size: 90px;
+  color: white;
+  text-shadow:
+    -1px -1px 0 #000,
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
+}
+
+/******************************************************************************************************************************/
+/*estilizando o logo estendido*/
+#logo_estendido{
+  display: flex;
+}
+
+#caixa_logo_estendido {
+  display: flex;
+  justify-content: normal;
+  align-items: self-end;
+
+  width: 100%;
+  max-width: 4000px;
+  height: 98px;
+  background-color:#5FB65C;
+  border: 1px solid black;
+  
+}
+
+#logo_texto_estendido {
+  font-family: 'Informal Roman';
+  font-size: 90px;
+  color: white;
+  margin: 0px;
+  margin-left: 1.5%;
+  text-shadow:
+    -1px -1px 0 #000,
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
+
+}
+/******************************************************************************************************************************/
+/*estilizando a entrada(input)padrão*/
+.input_padrao {
+    border-radius: 20px 20px 20px 20px;
+    width: 447px;
+    height: 62px;
+    box-shadow: inset;
+}
