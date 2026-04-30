@@ -1,55 +1,195 @@
-# NutriFlow
+# NutriAI
 
-Protótipo em Python/Streamlit para simular o fluxo do app de nutrição.
-
-## Estrutura
-- `app.py`: interface principal e navegação
-- `db.py`: SQLite, autenticação, perfis, posts e check-ins
-- `services/ai.py`: integração com Gemini 2.5 Flash e fallback local
-- `seed.py`: cria dados de exemplo
-
-## 🛠️ Pré-requisitos
-
-Antes de começar, você precisará ter instalado em sua máquina:
-* **Python 3.9 ou superior**
-* **Pip** (Gerenciador de pacotes do Python)
+App de nutrição com inteligência artificial que gera planos alimentares personalizados e oferece um consultor de saúde via chat.
 
 ---
 
-## 🚀 Configuração do Ambiente
+## Tecnologias
 
-Este projeto utiliza o **Pipenv** para gerenciar dependências e variáveis de ambiente de forma automática.
+**Backend**
+- Python 3.13
+- FastAPI
+- SQLite
+- Google Gemini 2.5 Flash
 
-### 1. Instalar o Pipenv
-Abra o seu terminal e instale o Pipenv globalmente:
+**Frontend**
+- React 18 + Vite
+- React Router DOM
+- Axios
+
+---
+
+## Pré-requisitos
+
+- Python 3.13+
+- Node.js v18+
+- Pipenv (`pip install pipenv`)
+- Chave de API do Google Gemini
+
+---
+
+## Configuração
+
+### 1. Clonar o repositório
+
 ```bash
-pip install pipenv
+git clone https://github.com/thiagojbarbosa0/Desenvolvimento-de-Software.git
+cd Desenvolvimento-de-Software
 ```
-### 2. Instalar as Dependências do Pipenv
-Abra o seu terminal e digite:
+
+### 2. Configurar a chave da API
+
+Crie um arquivo `.env` na raiz do projeto com base no `backend/.env.example`:
+
+```
+GEMINI_API_KEY=sua_chave_aqui
+```
+
+Obtenha sua chave gratuitamente em: https://aistudio.google.com/apikey
+
+> Crie a chave com uma conta Google pessoal e selecione "Create API key in new project".
+
+### 3. Instalar dependências do backend
+
 ```bash
-python -m pipenv install
+pipenv install
 ```
 
-## 🔑 Configuração da API
+### 4. Instalar dependências do frontend
 
-Obtenha uma chave de API no Google AI Studio.
-
-Na raiz do projeto, crie um arquivo chamado .env.
-
-No arquivo, adicione: GEMINI_API_KEY=sua_chave_gerada.
-
-OBS: Se não configurar a chave, o app continua funcionando com fallback local.
-
-## Rodando o Programa
-### Opções:
-1. Abra seu terminal e digite:
 ```bash
-python -m pipenv run py main.py
+cd frontend
+npm install
+cd ..
 ```
-2. Clique no "Run Python File" dentro do arquivo main.py
+
+---
+
+## Rodando o projeto
+
+O projeto precisa de **dois terminais abertos ao mesmo tempo**.
+
+### Terminal 1 — Backend
+
+Na raiz do projeto:
+
+```bash
+pipenv run uvicorn main:app --reload
+```
+
+Disponível em: http://127.0.0.1:8000
+
+### Terminal 2 — Frontend
+
+```bash
+cd frontend
+npm run dev
+```
+
+Disponível em: http://localhost:5173
+
+### Build para produção (frontend)
+
+```bash
+cd frontend
+npm run build
+npm run preview
+```
+
+---
+
+## Estrutura do projeto
+
+```
+Desenvolvimento-de-Software/
+├── main.py               # API FastAPI — endpoints
+├── Pipfile               # Dependências Python
+├── .env                  # Chave da API (não versionar)
+├── backend/
+│   ├── ai.py             # Integração com Google Gemini
+│   ├── chat.py           # Lógica do consultor IA
+│   ├── config.py         # Configurações e variáveis de ambiente
+│   ├── db.py             # Banco de dados SQLite
+│   ├── plan.py           # Geração de planos nutricionais
+│   ├── seed.py           # Inicialização do banco com dados de exemplo
+│   └── .env.example      # Modelo do arquivo .env
+└── frontend/
+    ├── src/
+    │   ├── pages/        # Telas do app
+    │   ├── assets/       # Componentes e fontes
+    │   └── services/
+    │       └── api.js    # Configuração do Axios
+    └── package.json
+```
+
+---
+
+## Modularização
+
+O backend é organizado como um pacote Python (`backend/`), com cada módulo tendo responsabilidade única:
+
+| Módulo | Responsabilidade |
+|---|---|
+| `main.py` | Ponto de entrada da API — define os endpoints e o servidor FastAPI |
+| `backend/config.py` | Carrega variáveis de ambiente via pydantic-settings |
+| `backend/db.py` | Toda a comunicação com o banco SQLite: criação de tabelas, queries e seed |
+| `backend/ai.py` | Integração com a API do Google Gemini: cliente, geração de plano e mensagem motivacional |
+| `backend/chat.py` | Lógica do chatbot NutriAI, com retry automático em caso de sobrecarga da API |
+| `backend/plan.py` | Cálculo de IMC e geração de plano nutricional local (fallback sem IA) |
+| `backend/seed.py` | Script avulso para inicializar o banco manualmente |
+
+Os módulos se importam de forma hierárquica, sem dependências circulares:
+
+```
+main.py
+ ├── backend.config
+ ├── backend.db
+ └── backend.chat
+      └── backend.ai
+           └── backend.plan
+```
+
+---
+
+## Telas
+
+| Rota         | Arquivo                      | Descrição              |
+|--------------|------------------------------|------------------------|
+| `/`          | `src/pages/TelaInicial.jsx`  | Home / Landing Page    |
+| `/login`     | `src/pages/TelaLogin.jsx`    | Tela de login          |
+| `/dashboard` | `src/pages/TelaPrincipal.jsx`| Dashboard + Chatbot    |
+
+---
+
+## Conexão frontend ↔ backend
+
+A URL base da API está em `frontend/src/services/api.js`:
+
+```js
+const api = axios.create({
+  baseURL: 'http://localhost:8000'
+});
+```
+
+> Branch de integração: `feature/integracao-login`
+
+---
 
 ## Usuários de exemplo
-- email: ana@demo.com / senha: 1234
-- email: bruno@demo.com / senha: 1234
-- email: carla@demo.com / senha: 1234
+
+Criados automaticamente ao subir o projeto:
+
+| Nome         | Email            | Senha |
+|--------------|------------------|-------|
+| Ana Souza    | ana@demo.com     | 1234  |
+| Bruno Lima   | bruno@demo.com   | 1234  |
+| Carla Mendes | carla@demo.com   | 1234  |
+
+---
+
+## Funcionalidades
+
+- Cadastro e login de usuários
+- Consultor de nutrição via chat com IA
+- Geração de plano alimentar personalizado
+- Fallback local caso a API do Gemini esteja indisponível

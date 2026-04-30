@@ -1,9 +1,9 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing import Optional
 
 
 class Settings(BaseSettings):
-    gemini_api_key: str
-    # Futuramente: database_url: str
+    gemini_api_key: Optional[str] = None
 
     model_config = SettingsConfigDict(env_file=".env")
 
