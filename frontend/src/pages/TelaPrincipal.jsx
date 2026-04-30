@@ -1,11 +1,20 @@
 import { useState } from 'react';
+import { useEffect } from 'react';
 import '../TelaPrincipal.css';
 import MostrarLogo from '../assets/components.jsx';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
+import { api } from '../services/api.js';
 
 function TelaPrincipal(){
   const navigate = useNavigate();
   const paginaAtiva = "Consultor IA";
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/TelaLogin');
+    }
+  }, [navigate]);
 
   const menus = [
     { nome: "Meu perfil", icone: "👤", rota: "/perfil" },
@@ -28,19 +37,34 @@ function TelaPrincipal(){
   ]);
 
   // Função disparada ao clicar no botão Enviar
-  const enviarMensagem = () => {
-    // Evita enviar mensagem vazia ou só com espaços
-    if (mensagemAtual.trim() === "") return; 
+  const enviarMensagem = async () => {
+  if (mensagemAtual.trim() === "") return;
 
-    // Cria o objeto da nova mensagem
-    const novaMensagemUser = { autor: "usuario", texto: mensagemAtual };
+  const novaMensagemUser = { autor: "usuario", texto: mensagemAtual };
+  setHistorico(prev => [...prev, novaMensagemUser]);
+  setMensagemAtual("");
+
+  setHistorico(prev => [...prev, { autor: "bot", texto: "..." }]);
+
+  try {
+    const { data } = await api.post("/chat", {
+      mensagem: mensagemAtual,
+      user_id: localStorage.getItem("user_id"),
+    });
+
+    console.log("Resposta da API:", data);
     
-    // Atualiza o histórico: pega tudo que já tinha (...historico) e adiciona a nova
-    setHistorico([...historico, novaMensagemUser]);
-    
-    // Limpa o campo de digitação
-    setMensagemAtual("");
-  };
+    setHistorico(prev => [
+      ...prev.slice(0, -1),
+      { autor: "bot", texto: data.resposta }
+    ]);
+  } catch (err) {
+    setHistorico(prev => [
+      ...prev.slice(0, -1),
+      { autor: "bot", texto: "Erro ao conectar com o servidor. Tente novamente." }
+    ]);
+  }
+};
 
   return (
     <div className='limitador_tags'>

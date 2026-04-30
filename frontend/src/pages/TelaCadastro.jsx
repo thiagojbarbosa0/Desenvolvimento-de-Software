@@ -4,34 +4,46 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { api } from '../services/api.js';
 
-function TelaLogin() {
+function TelaCadastro() {
   const navigate = useNavigate();
+  const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [confirmar, setConfirmar] = useState('');
   const [erro, setErro] = useState('');
   const [carregando, setCarregando] = useState(false);
 
-  const handleLogin = async (e) => {
+  const handleCadastro = async (e) => {
     e.preventDefault();
     setErro('');
 
-    if (!email || !senha) {
-      setErro('Preencha e-mail e senha.');
+    if (!nome || !email || !senha || !confirmar) {
+      setErro('Preencha todos os campos.');
+      return;
+    }
+    if (senha !== confirmar) {
+      setErro('As senhas não coincidem.');
+      return;
+    }
+    if (senha.length < 6) {
+      setErro('A senha deve ter pelo menos 6 caracteres.');
       return;
     }
 
     setCarregando(true);
     try {
-      const { data } = await api.post('/auth/login', {
+      await api.post('/auth/cadastro', {
+        name: nome,
         email,
         password: senha,
       });
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user_id', data.user_id);
-      localStorage.setItem('user_name', data.name);
-      navigate('/TelaPrincipal');
+      navigate('/TelaLogin');
     } catch (err) {
-      setErro('E-mail ou senha incorretos.');
+      if (err.response?.status === 409) {
+        setErro('Este e-mail já está cadastrado.');
+      } else {
+        setErro('Erro ao criar conta. Tente novamente.');
+      }
     } finally {
       setCarregando(false);
     }
@@ -42,26 +54,43 @@ function TelaLogin() {
       <MostrarLogoEstendido />
       <div id='TelaLogin'>
         <div id='formulario_login'>
-          <form onSubmit={handleLogin}>
-            <div><h2>Login</h2></div>
+          <form onSubmit={handleCadastro}>
+            <div><h2>Criar conta</h2></div>
 
-            <p id="entrada_email">Email ou nome de usuário</p>
+            <p>Nome completo</p>
             <input
               type='text'
+              className='input_padrao input_login'
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+            />
+
+            <p>E-mail</p>
+            <input
+              type='email'
               className='input_padrao input_login'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
 
             <div>
-              <p id='entrada_senha'>Digite sua senha</p>
+              <p>Senha</p>
               <input
                 type='password'
                 className='input_padrao input_login'
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
               />
-              <p id='esqueci_senha'>Esqueci minha senha</p>
+            </div>
+
+            <div>
+              <p>Confirmar senha</p>
+              <input
+                type='password'
+                className='input_padrao input_login'
+                value={confirmar}
+                onChange={(e) => setConfirmar(e.target.value)}
+              />
             </div>
 
             {erro && (
@@ -72,13 +101,13 @@ function TelaLogin() {
 
             <div className='acoes'>
               <button type='submit' disabled={carregando}>
-                {carregando ? 'Entrando...' : 'Entrar'}
+                {carregando ? 'Criando conta...' : 'Criar conta'}
               </button>
               <button
                 type='button'
-                onClick={() => navigate('/cadastro')}
+                onClick={() => navigate('/TelaLogin')}
               >
-                Criar Conta
+                Já tenho conta
               </button>
             </div>
           </form>
@@ -88,4 +117,4 @@ function TelaLogin() {
   );
 }
 
-export default TelaLogin;
+export default TelaCadastro;

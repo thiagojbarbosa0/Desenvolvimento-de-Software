@@ -353,3 +353,4 @@ $RECYCLE.BIN/
 
 .env
 # Isso impede que você suba sua chave pessoal para o repositório por acidente.
+.db

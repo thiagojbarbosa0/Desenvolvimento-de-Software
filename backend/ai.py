@@ -3,7 +3,7 @@ import json
 import os
 from typing import Any, Dict, Optional
 from dotenv import load_dotenv
-from plan import generate_fallback_plan, default_motivational_phrase
+from backend.plan import generate_fallback_plan, default_motivational_phrase
 
 try:
     from google import genai
@@ -11,6 +11,7 @@ except Exception:
     genai = None
 
 load_dotenv()
+
 
 def gemini_client() -> Optional[Any]:
     if genai is None:
@@ -21,8 +22,10 @@ def gemini_client() -> Optional[Any]:
         return None
 
     try:
-        return genai.Client(api_key=api_key)
-    except Exception:
+        client = genai.Client(api_key=api_key)
+        return client
+    except Exception as e:
+        print(f"Erro ao criar cliente Gemini: {e}")
         return None
 
 
