@@ -2,19 +2,16 @@ import { useState } from 'react';
 import { api } from '../services/api.js';
 
 function ConsultorIA() {
-  // Guarda o que o usuário está digitando no momento
   const [mensagemAtual, setMensagemAtual] = useState(""); 
-  
-  // Guarda o histórico completo da conversa
   const [historico, setHistorico] = useState([
     { autor: "bot", texto: "Olá, sou o seu consultor IA. Como posso ajudá-lo?" }
   ]);
 
-  // Função disparada ao clicar no botão Enviar ou apertar Enter
   const enviarMensagem = async () => {
-    if (mensagemAtual.trim() === "") return;
+    const textoParaEnviar = mensagemAtual.trim();
+    if (textoParaEnviar === "") return;
 
-    const novaMensagemUser = { autor: "usuario", texto: mensajeAtual };
+    const novaMensagemUser = { autor: "usuario", texto: textoParaEnviar };
     setHistorico(prev => [...prev, novaMensagemUser]);
     setMensagemAtual("");
 
@@ -22,11 +19,9 @@ function ConsultorIA() {
 
     try {
       const { data } = await api.post("/chat", {
-        mensagem: mensagemAtual,
+        mensagem: textoParaEnviar,
         user_id: localStorage.getItem("user_id"),
       });
-
-      console.log("Resposta da API:", data);
       
       setHistorico(prev => [
         ...prev.slice(0, -1),
@@ -43,18 +38,14 @@ function ConsultorIA() {
   return (
     <main className="area-do-chat">
       <div className="historico-mensagens">
-        {/* FAZ UM LOOP NO HISTÓRICO PARA RENDERIZAR CADA BALÃO */}
         {historico.map((msg, index) => (
           <div 
             key={index} 
             className={msg.autor === "bot" ? "mensagem-bot" : "mensagem-usuario"}
           >
-            {/* Se for bot, mostra o avatar */}
             {msg.autor === "bot" && (
               <div className="avatar-bot">🤖</div>
             )}
-            
-            {/* O balão de texto em si */}
             <div className={msg.autor === "bot" ? "balao-bot" : "balao-usuario"}>
               {msg.texto}
             </div>

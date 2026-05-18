@@ -13,7 +13,6 @@ app = FastAPI(title="NutriFlow API")
 
 init_db()
 
-# CORS — permite o Vite (porta 5173) chamar o FastAPI (porta 8000)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
@@ -133,3 +132,28 @@ def buscar_plano(user_id: str):
 def chat(body: ChatRequest):
     resposta = responder_mensagem(body.mensagem)
     return {"resposta": resposta}
+
+
+# ──────────────────────────────────────────
+# DASHBOARD
+# ──────────────────────────────────────────
+
+@app.get("/dashboard/{user_id}")
+def obter_dados_dashboard(user_id: str):
+    if user_id == "null" or not user_id:
+        return {
+            "frase": "Faça login no NutriFlow para acompanhar suas metas!",
+            "dias_consecutivos": 0,
+            "meta_kcal": 2000,
+            "meta_treino": "Nenhum treino listado."
+        }
+    return {
+        "frase": "Não diminua a meta, aumente o esforço!",
+        "dias_consecutivos": 1,
+        "meta_kcal": 2350,
+        "meta_treino": "levantamento de garfo, 20 minutos"
+    }
+
+@app.post("/dashboard/{user_id}/reiniciar")
+def reiniciar_contagem_dashboard(user_id: str):
+    return {"status": "sucesso", "mensagem": "Contagem reiniciada com sucesso"}
