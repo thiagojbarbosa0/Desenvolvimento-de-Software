@@ -1,138 +1,84 @@
-from __future__ import annotations
-
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from typing import Optional
-from backend.config import settings
-from backend.chat import responder_mensagem
-from backend.db import authenticate, create_user, get_user_by_id, get_profile, upsert_profile, init_db
-from backend.ai import generate_plan
+from sqlalchemy.orm import Session
+from . import models, schemas, database
+from .services import ai_service
+import hashlib
 
-app = FastAPI(title="NutriFlow API")
+models.Base.metadata.create_all(bind=database.engine)
 
-init_db()
+app = FastAPI(title="NutriFlow API", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=["*"], # In production, restrict this
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-
-# ──────────────────────────────────────────
-# SCHEMAS
-# ──────────────────────────────────────────
-
-class LoginRequest(BaseModel):
-    email: str
-    password: str
-
-class CadastroRequest(BaseModel):
-    name: str
-    email: str
-    password: str
-
-class PlanRequest(BaseModel):
-    user_id: str
-    age: int
-    biological_sex: str
-    height_cm: float
-    weight_kg: float
-    goal: str
-    other_goal: Optional[str] = ""
-    dcnt: Optional[str] = "Não"
-    dcnt_details: Optional[str] = ""
-    activity_level: str
-    sleep_hours: float
-    sleep_minutes: int
-    stress_level: int
-    motivations: Optional[str] = ""
-    objective: Optional[str] = ""
-    additional_details: Optional[str] = ""
-    meal_preferences: Optional[str] = ""
-
-class ChatRequest(BaseModel):
-    mensagem: str
-    user_id: Optional[str] = None
-
-
-# ──────────────────────────────────────────
-# HEALTH
-# ──────────────────────────────────────────
+def hash_password(password: str):
+    return hashlib.sha256(password.encode()).hexdigest()
 
 @app.get("/")
-def health_check():
-    key_loaded = bool(settings.gemini_api_key)
-    return {"status": "ok", "gemini_key_loaded": key_loaded}
+def health():
+    return {"status": "online"}
 
-
-# ──────────────────────────────────────────
-# AUTH
-# ──────────────────────────────────────────
-
-@app.post("/auth/login")
-def login(body: LoginRequest):
-    user = authenticate(body.email, body.password)
-    if not user:
-        raise HTTPException(status_code=401, detail="E-mail ou senha incorretos.")
-    return {
-        "token": user["id"],
-        "user_id": user["id"],
-        "name": user["name"],
-    }
-
-@app.post("/auth/cadastro")
-def cadastro(body: CadastroRequest):
-    if not body.name or not body.email or not body.password:
-        raise HTTPException(status_code=400, detail="Preencha todos os campos.")
-    criado = create_user(body.name, body.email, body.password)
-    if not criado:
+@app.post("/auth/cadastro", status_code=status.HTTP_201_CREATED)
+def cadastro(user_in: schemas.UserCreate, db: Session = Depends(database.get_db)):
+    db_user = db.query(models.User).filter(models.User.email == user_in.email).first()
+    if db_user:
         raise HTTPException(status_code=409, detail="E-mail já cadastrado.")
+    
+    new_user = models.User(
+        name=user_in.name,
+        email=user_in.email,
+        password_hash=hash_password(user_in.password)
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
     return {"message": "Conta criada com sucesso."}
 
+@app.post("/auth/login", response_model=schemas.TokenResponse)
+def login(login_in: schemas.UserLogin, db: Session = Depends(database.get_db)):
+    user = db.query(models.User).filter(models.User.email == login_in.email).first()
+    if not user or user.password_hash != hash_password(login_in.password):
+        raise HTTPException(status_code=401, detail="E-mail ou senha incorretos.")
+    
+    return {
+        "token": user.id,
+        "user_id": user.id,
+        "name": user.name
+    }
 
-# ──────────────────────────────────────────
-# PLANO
-# ──────────────────────────────────────────
-
-@app.post("/plano/gerar")
-def gerar_plano(body: PlanRequest):
-    user = get_user_by_id(body.user_id)
-    if not user:
-        raise HTTPException(status_code=404, detail="Usuário não encontrado.")
-
-    profile_data = body.model_dump()
-    profile_data["name"] = user["name"]
-
-    plano = generate_plan(profile_data)
-
-    profile_data["plan_json"] = plano
-    upsert_profile(body.user_id, profile_data)
-
-    return {"plan": plano}
-
-@app.get("/plano/{user_id}")
-def buscar_plano(user_id: str):
-    profile = get_profile(user_id)
-    if not profile:
-        raise HTTPException(status_code=404, detail="Perfil não encontrado.")
+@app.post("/api/v1/plan", response_model=schemas.PlanResponse)
+def create_plan(profile: schemas.ProfileCreate, db: Session = Depends(database.get_db)):
+    plan_result = ai_service.generate_nutritional_plan(profile)
+    
+    # Save to profile
+    db_profile = db.query(models.Profile).filter(models.Profile.user_id == profile.user_id).first()
+    
     import json
-    plan = json.loads(profile["plan_json"] or "{}")
-    return {"plan": plan}
-
+    if db_profile:
+        for key, value in profile.dict().items():
+            setattr(db_profile, key, value)
+        db_profile.plan_json = json.dumps(plan_result)
+    else:
+        db_profile = models.Profile(**profile.dict(), plan_json=json.dumps(plan_result))
+        db.add(db_profile)
+    
+    db.commit()
+    return {"status": "success", "data": plan_result}
 
 # ──────────────────────────────────────────
 # CHAT
 # ──────────────────────────────────────────
 
-@app.post("/chat")
-def chat(body: ChatRequest):
-    resposta = responder_mensagem(body.mensagem)
+@app.post("/chat", response_model=schemas.ChatResponse)
+def chat(body: schemas.ChatRequest):
+    resposta = ai_service.responder_mensagem_chat(body.mensagem)
     return {"resposta": resposta}
-
 
 # ──────────────────────────────────────────
 # DASHBOARD
@@ -151,7 +97,7 @@ def obter_dados_dashboard(user_id: str):
         "frase": "Não diminua a meta, aumente o esforço!",
         "dias_consecutivos": 1,
         "meta_kcal": 2350,
-        "meta_treino": "levantamento de garfo, 20 minutos"
+        "meta_treino": "levantamento de garfo, 20 minutes"
     }
 
 @app.post("/dashboard/{user_id}/reiniciar")
