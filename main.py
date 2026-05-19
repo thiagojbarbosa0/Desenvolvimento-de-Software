@@ -58,6 +58,7 @@ def create_plan(profile: schemas.ProfileCreate, db: Session = Depends(database.g
     
     # Save to profile
     db_profile = db.query(models.Profile).filter(models.Profile.user_id == profile.user_id).first()
+    
     import json
     if db_profile:
         for key, value in profile.dict().items():
@@ -70,7 +71,35 @@ def create_plan(profile: schemas.ProfileCreate, db: Session = Depends(database.g
     db.commit()
     return {"status": "success", "data": plan_result}
 
+# ──────────────────────────────────────────
+# CHAT
+# ──────────────────────────────────────────
+
 @app.post("/chat", response_model=schemas.ChatResponse)
 def chat(body: schemas.ChatRequest):
     resposta = ai_service.responder_mensagem_chat(body.mensagem)
     return {"resposta": resposta}
+
+# ──────────────────────────────────────────
+# DASHBOARD
+# ──────────────────────────────────────────
+
+@app.get("/dashboard/{user_id}")
+def obter_dados_dashboard(user_id: str):
+    if user_id == "null" or not user_id:
+        return {
+            "frase": "Faça login no NutriFlow para acompanhar suas metas!",
+            "dias_consecutivos": 0,
+            "meta_kcal": 2000,
+            "meta_treino": "Nenhum treino listado."
+        }
+    return {
+        "frase": "Não diminua a meta, aumente o esforço!",
+        "dias_consecutivos": 1,
+        "meta_kcal": 2350,
+        "meta_treino": "levantamento de garfo, 20 minutes"
+    }
+
+@app.post("/dashboard/{user_id}/reiniciar")
+def reiniciar_contagem_dashboard(user_id: str):
+    return {"status": "sucesso", "mensagem": "Contagem reiniciada com sucesso"}

@@ -11,11 +11,11 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<TelaInicial />} />
-        <Route path='/TelaLogin' element={<TelaLogin />} />
+        <Route path='/tela-login' element={<TelaLogin />} />
         <Route path='/cadastro' element={<TelaCadastro />} />
-        <Route path='/TelaPrincipal' element={<TelaPrincipal />} >
+        <Route path='/tela-principal' element={<TelaPrincipal />} >
           <Route index element={<ConsultorIA />} />
-          <Route path='Dashboard' element={<Dashboard />} />  
+          <Route path='dashboard' element={<Dashboard />} />  
         </Route>
       </Routes>
     </BrowserRouter>

@@ -10,26 +10,24 @@ function TelaPrincipal() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      navigate('/TelaLogin');
+      navigate('/tela-login');
     }
   }, [navigate]);
 
-  // Rotas
   const menus = [
-    { nome: "Meu perfil", icone: "👤", rota: "/TelaPrincipal/perfil" },
-    { nome: "Dashboard", icone: "🏠", rota: "/TelaPrincipal/Dashboard" },
-    { nome: "Comunidade", icone: "💬", rota: "/TelaPrincipal/comunidade" },
-    { nome: "Minha dieta", icone: "🍲", rota: "/TelaPrincipal/dieta" },
-    { nome: "Consultor IA", icone: "🤖", rota: "/TelaPrincipal" }, // Rota raiz do painel
+    { nome: "Meu perfil", icone: "👤", rota: "/tela-principal/perfil" },
+    { nome: "Dashboard", icone: "🏠", rota: "/tela-principal/dashboard" },
+    { nome: "Comunidade", icone: "💬", rota: "/tela-principal/comunidade" },
+    { nome: "Minha dieta", icone: "🍲", rota: "/tela-principal/dieta" },
+    { nome: "Consultor IA", icone: "🤖", rota: "/tela-principal" },
   ];
 
-  // Descobre dinamicamente o nome da página ativa baseado na URL atual
   const obterPaginaAtiva = () => {
-    if (location.pathname.includes('Dashboard')) return "Dashboard";
+    if (location.pathname.includes('dashboard')) return "Dashboard";
     if (location.pathname.includes('perfil')) return "Meu perfil";
     if (location.pathname.includes('comunidade')) return "Comunidade";
     if (location.pathname.includes('dieta')) return "Minha dieta";
-    return "Consultor IA"; // Padrão
+    return "Consultor IA";
   };
 
   const paginaAtiva = obterPaginaAtiva();
@@ -40,7 +38,6 @@ function TelaPrincipal() {
       <header className="topo-logo">
         <MostrarLogo/>
         <div className='caixa_cabecalho'>
-          {/* O título do cabeçalho agora muda dinamicamente de acordo com a tela! */}
           <h1>{paginaAtiva} - Sistema NutriAI</h1>
         </div>   
       </header>
@@ -62,6 +59,7 @@ function TelaPrincipal() {
             </ul>
           </nav>
         </aside>
+        
         <div style={{ flex: 1, display: 'flex' }}>
           <Outlet />
         </div>
