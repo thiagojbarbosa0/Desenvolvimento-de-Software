@@ -23,7 +23,6 @@ App de nutrição com inteligência artificial que gera planos alimentares perso
 
 - Python 3.13+
 - Node.js v18+
-- Pipenv (`pip install pipenv`)
 - Chave de API do Google Gemini
 
 ---
@@ -34,6 +33,7 @@ App de nutrição com inteligência artificial que gera planos alimentares perso
 
 ```bash
 git clone https://github.com/thiagojbarbosa0/Desenvolvimento-de-Software.git
+
 cd Desenvolvimento-de-Software
 ```
 
@@ -41,25 +41,33 @@ cd Desenvolvimento-de-Software
 
 Crie um arquivo `.env` na raiz do projeto com base no `backend/.env.example`:
 
-```
-GEMINI_API_KEY=sua_chave_aqui
+```bash
+cp backend/.env.example .env
 ```
 
 Obtenha sua chave gratuitamente em: https://aistudio.google.com/apikey
 
 > Crie a chave com uma conta Google pessoal e selecione "Create API key in new project".
 
-### 3. Instalar dependências do backend
+Depois edite o .env e coloque sua chave após o texto "GEMINI_API_KEY=".
+
+### 3. Criar ambiente virtual Python e instalar dependências do backend
 
 ```bash
-pipenv install
+python -m venv venv
+
+source venv/bin/activate #Activate.ps1 no Windows
+
+pip install -r requirements.txt
 ```
 
 ### 4. Instalar dependências do frontend
 
 ```bash
 cd frontend
+
 npm install
+
 cd ..
 ```
 
@@ -74,15 +82,18 @@ O projeto precisa de **dois terminais abertos ao mesmo tempo**.
 Na raiz do projeto:
 
 ```bash
-pipenv run uvicorn main:app --reload
+python -m uvicorn main:app --reload
 ```
 
 Disponível em: http://127.0.0.1:8000
+
+> Certifique-se que nenhum serviço está rodando na mesma porta.
 
 ### Terminal 2 — Frontend
 
 ```bash
 cd frontend
+
 npm run dev
 ```
 
@@ -92,7 +103,9 @@ Disponível em: http://localhost:5173
 
 ```bash
 cd frontend
+
 npm run build
+
 npm run preview
 ```
 

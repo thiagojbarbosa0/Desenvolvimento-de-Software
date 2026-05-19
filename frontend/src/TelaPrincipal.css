@@ -1,5 +1,5 @@
 /* ======================================================
-   ESTRUTURA PRINCIPAL (O PATRIARCA)
+   ESTRUTURA PRINCIPAL (O PAI)
 ====================================================== */
 .limitador_tags {
     display: flex;
@@ -88,7 +88,7 @@ h1 {
 }
 
 /* ======================================================
-   ÁREA DO CHAT (LADO DIREITO) - A MÁGICA ACONTECE AQUI
+   ÁREA DO CHAT (LADO DIREITO)
 ====================================================== */
 .area-do-chat {
     flex: 1; 
