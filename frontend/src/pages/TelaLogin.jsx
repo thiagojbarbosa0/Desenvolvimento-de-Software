@@ -29,7 +29,7 @@ function TelaLogin() {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user_id', data.user_id);
       localStorage.setItem('user_name', data.name);
-      navigate('/TelaPrincipal');
+      navigate('/tela-principal');
     } catch (err) {
       setErro('E-mail ou senha incorretos.');
     } finally {
@@ -77,8 +77,7 @@ function TelaLogin() {
               <button
                 type='button'
                 onClick={() => navigate('/cadastro')}
-              >
-                Criar Conta
+              >Criar Conta
               </button>
             </div>
           </form>

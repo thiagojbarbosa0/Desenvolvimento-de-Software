@@ -19,7 +19,7 @@ function TelaInicial(){
 
     <div id='botoes_TelaInicial'>
       <div id='botao_continuar'>
-        <button onClick={() => navigate('/TelaLogin')}>Continuar</button>
+        <button onClick={() => navigate('/tela-login')}>Continuar</button>
         <p>Caso já possua uma conta</p>
       </div>
       <div id='Criar_conta'>

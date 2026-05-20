@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from . import models, schemas, database
-from .services import ai_service
+import models, schemas, database 
+import ai_service               
 import hashlib
 
 models.Base.metadata.create_all(bind=database.engine)
@@ -11,7 +11,7 @@ app = FastAPI(title="NutriFlow API", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # In production, restrict this
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -56,7 +56,7 @@ def login(login_in: schemas.UserLogin, db: Session = Depends(database.get_db)):
 def create_plan(profile: schemas.ProfileCreate, db: Session = Depends(database.get_db)):
     plan_result = ai_service.generate_nutritional_plan(profile)
     
-    # Save to profile
+    # Salvar para o perfil
     db_profile = db.query(models.Profile).filter(models.Profile.user_id == profile.user_id).first()
     
     import json
@@ -70,6 +70,7 @@ def create_plan(profile: schemas.ProfileCreate, db: Session = Depends(database.g
     
     db.commit()
     return {"status": "success", "data": plan_result}
+
 
 # ──────────────────────────────────────────
 # CHAT
@@ -88,15 +89,15 @@ def chat(body: schemas.ChatRequest):
 def obter_dados_dashboard(user_id: str):
     if user_id == "null" or not user_id:
         return {
-            "frase": "Faça login no NutriFlow para acompanhar suas metas!",
+            "frase": "Faça login no NutriAI para acompanhar suas metas!",
             "dias_consecutivos": 0,
             "meta_kcal": 2000,
             "meta_treino": "Nenhum treino listado."
         }
     return {
-        "frase": "Não diminua a meta, aumente o esforço!",
+        "frase": "Não diminua a meta, aumente o esfoço!",
         "dias_consecutivos": 1,
-        "meta_kcal": 2350,
+        "meta_kcal": 0,
         "meta_treino": "levantamento de garfo, 20 minutes"
     }
 

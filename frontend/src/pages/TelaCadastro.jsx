@@ -37,7 +37,7 @@ function TelaCadastro() {
         email,
         password: senha,
       });
-      navigate('/TelaLogin');
+      navigate('/tela-login');
     } catch (err) {
       if (err.response?.status === 409) {
         setErro('Este e-mail já está cadastrado.');
@@ -105,7 +105,7 @@ function TelaCadastro() {
               </button>
               <button
                 type='button'
-                onClick={() => navigate('/TelaLogin')}
+                onClick={() => navigate('/tela-login')}
               >
                 Já tenho conta
               </button>

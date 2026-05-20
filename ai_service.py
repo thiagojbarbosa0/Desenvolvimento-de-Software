@@ -1,7 +1,7 @@
 import json
 from google import genai
-from ..config import settings
-from ..schemas import ProfileCreate
+from config import settings
+from schemas import ProfileCreate
 
 client = None
 if settings.gemini_api_key:
@@ -41,4 +41,7 @@ def responder_mensagem_chat(mensagem: str) -> str:
         )
         return response.text.strip()
     except Exception as e:
-        return f"Erro no Gemini: {str(e)}"
+        #return f"Erro no Gemini: {str(e)}" #linha comentada para posterior analise da mensagem de retorno com erro.
+        mensagem = "Desculpe, estamos com problemas técnicos, tente novamente mais tarde!"
+        return mensagem
+
