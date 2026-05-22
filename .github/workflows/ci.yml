@@ -19,9 +19,6 @@ jobs:
         so: [ubuntu-latest, windows-latest, macos-latest]
 
     runs-on: ${{ matrix.so }}
-    defaults:
-      run:
-        working-directory: Desenvolvimento-de-Software
     steps:
       - name: 1. Baixar o código do repositório padrão do Github (Checkout)
         uses: actions/checkout@v4
@@ -54,7 +51,7 @@ jobs:
     runs-on: ${{ matrix.so }}
     defaults:
       run:
-        working-directory: Desenvolvimento-de-Software/frontend
+        working-directory: frontend
     steps:
     
       - name: 1. Baixar o código do repositório padrão do Github (Checkout)
