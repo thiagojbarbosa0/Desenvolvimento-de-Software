@@ -21,7 +21,7 @@ def generate_nutritional_plan(profile: ProfileCreate) -> dict:
     
     try:
         response = client.models.generate_content(
-            model="gemini-2.0-flash",
+            model="gemini-2.5-flash",
             contents=prompt,
             config={"response_mime_type": "application/json"}
         )
@@ -36,7 +36,7 @@ def responder_mensagem_chat(mensagem: str) -> str:
     system_prompt = "Você é um consultor de nutrição chamado NutriAI. Responda em Português."
     try:
         response = client.models.generate_content(
-            model="gemini-2.0-flash",
+            model="gemini-2.5-flash",
             contents=f"{system_prompt}\n\nPergunta: {mensagem}"
         )
         return response.text.strip()
