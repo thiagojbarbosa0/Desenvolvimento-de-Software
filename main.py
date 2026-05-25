@@ -1,11 +1,13 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-import models, schemas, database 
-import ai_service               
+from backend.models import *
+from backend.schemas import *
+from backend.database import * 
+from backend.ai_service import *               
 import hashlib
 
-models.Base.metadata.create_all(bind=database.engine)
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="NutriFlow API", version="1.0.0")
 
@@ -25,12 +27,12 @@ def health():
     return {"status": "online"}
 
 @app.post("/auth/cadastro", status_code=status.HTTP_201_CREATED)
-def cadastro(user_in: schemas.UserCreate, db: Session = Depends(database.get_db)):
-    db_user = db.query(models.User).filter(models.User.email == user_in.email).first()
+def cadastro(user_in: UserCreate, db: Session = Depends(get_db)):
+    db_user = db.query(User).filter(User.email == user_in.email).first()
     if db_user:
         raise HTTPException(status_code=409, detail="E-mail já cadastrado.")
     
-    new_user = models.User(
+    new_user = User(
         name=user_in.name,
         email=user_in.email,
         password_hash=hash_password(user_in.password)
@@ -40,9 +42,9 @@ def cadastro(user_in: schemas.UserCreate, db: Session = Depends(database.get_db)
     db.refresh(new_user)
     return {"message": "Conta criada com sucesso."}
 
-@app.post("/auth/login", response_model=schemas.TokenResponse)
-def login(login_in: schemas.UserLogin, db: Session = Depends(database.get_db)):
-    user = db.query(models.User).filter(models.User.email == login_in.email).first()
+@app.post("/auth/login", response_model=TokenResponse)
+def login(login_in: UserLogin, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == login_in.email).first()
     if not user or user.password_hash != hash_password(login_in.password):
         raise HTTPException(status_code=401, detail="E-mail ou senha incorretos.")
     
@@ -52,12 +54,12 @@ def login(login_in: schemas.UserLogin, db: Session = Depends(database.get_db)):
         "name": user.name
     }
 
-@app.post("/api/v1/plan", response_model=schemas.PlanResponse)
-def create_plan(profile: schemas.ProfileCreate, db: Session = Depends(database.get_db)):
-    plan_result = ai_service.generate_nutritional_plan(profile)
+@app.post("/api/v1/plan", response_model=PlanResponse)
+def create_plan(profile: ProfileCreate, db: Session = Depends(get_db)):
+    plan_result = generate_nutritional_plan(profile)
     
     # Salvar para o perfil
-    db_profile = db.query(models.Profile).filter(models.Profile.user_id == profile.user_id).first()
+    db_profile = db.query(Profile).filter(Profile.user_id == profile.user_id).first()
     
     import json
     if db_profile:
@@ -65,7 +67,7 @@ def create_plan(profile: schemas.ProfileCreate, db: Session = Depends(database.g
             setattr(db_profile, key, value)
         db_profile.plan_json = json.dumps(plan_result)
     else:
-        db_profile = models.Profile(**profile.dict(), plan_json=json.dumps(plan_result))
+        db_profile = Profile(**profile.dict(), plan_json=json.dumps(plan_result))
         db.add(db_profile)
     
     db.commit()
@@ -76,10 +78,13 @@ def create_plan(profile: schemas.ProfileCreate, db: Session = Depends(database.g
 # CHAT
 # ──────────────────────────────────────────
 
-@app.post("/chat", response_model=schemas.ChatResponse)
-def chat(body: schemas.ChatRequest):
-    resposta = ai_service.responder_mensagem_chat(body.mensagem)
-    return {"resposta": resposta}
+@app.post("/chat", response_model=ChatResponse)
+def chat(body: ChatRequest):
+    try:
+        resposta = responder_mensagem_chat(body.mensagem)
+        return {"resposta": resposta}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # ──────────────────────────────────────────
 # DASHBOARD

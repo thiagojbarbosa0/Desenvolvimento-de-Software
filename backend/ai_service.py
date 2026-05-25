@@ -1,7 +1,7 @@
 import json
 from google import genai
-from config import settings
-from schemas import ProfileCreate
+from backend.config import settings
+from backend.schemas import ProfileCreate
 
 client = None
 if settings.gemini_api_key:
