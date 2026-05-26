@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '../../services/api.js';
 import { useNavigate } from 'react-router-dom';
-import '../Dashboard.css';
+import './Dashboard.css';
 
 function Dashboard() {
   const navigate = useNavigate();

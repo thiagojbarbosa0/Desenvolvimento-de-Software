@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import TelaInicial from './pages/TelaInicial.jsx';
-import TelaLogin from './pages/TelaLogin.jsx';
-import TelaCadastro from './pages/TelaCadastro.jsx';
-import TelaPrincipal from './pages/TelaPrincipal.jsx';
-import Dashboard from './pages/Dashboard.jsx';
-import ConsultorIA from './pages/ConsultorIA.jsx';
+import TelaInicial from './pages/Home/TelaInicial.jsx';
+import TelaLogin from './pages/Auth/Login/TelaLogin.jsx';
+import TelaCadastro from './pages/Auth/Cadastro/TelaCadastro.jsx';
+import TelaPrincipal from './pages/Main/TelaPrincipal.jsx';
+import Dashboard from './pages/Dashboard/Dashboard.jsx';
+import ConsultorIA from './pages/ConsultorIA/ConsultorIA.jsx';
 
 function App() {
   return (

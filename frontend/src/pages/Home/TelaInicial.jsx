@@ -1,4 +1,4 @@
-import '../TelaInicial.css';
+import './TelaInicial.css';
 import MostrarLogo from '../../assets/components.jsx';
 import { useNavigate } from 'react-router-dom'; 
  

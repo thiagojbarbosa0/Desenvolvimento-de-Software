@@ -1,4 +1,4 @@
-import '../TelaLogin.css';
+import '../Login/TelaLogin.css';
 import { MostrarLogoEstendido } from '../../../assets/components.jsx';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
