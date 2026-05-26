@@ -1,5 +1,5 @@
-import '../TelaInicial.css';
-import MostrarLogo from '../assets/components.jsx';
+import './TelaInicial.css';
+import MostrarLogo from '../../assets/components.jsx';
 import { useNavigate } from 'react-router-dom'; 
  
 function TelaInicial(){
