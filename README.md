@@ -212,6 +212,6 @@ Criados automaticamente ao subir o projeto:
 
 Os testes devem ser preferencialmente realizados em ambiente virtual 
 principalmente para a garantia de compatibilidade dos requisitos.
-execute o seguinte comando:
+Execute o seguinte comando:
 ```bash
 pip install pytest passlib bcrypt pytest-mock && python -m pytest testes/testes_unitarios/test_nutriai_logic.py
