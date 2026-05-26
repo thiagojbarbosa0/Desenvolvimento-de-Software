@@ -1,8 +1,8 @@
 import '../TelaLogin.css';
-import { MostrarLogoEstendido } from '../assets/components.jsx';
+import { MostrarLogoEstendido } from '../../../assets/components.jsx';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { api } from '../services/api.js';
+import { api } from '../../../services/api.js';
 
 function TelaCadastro() {
   const navigate = useNavigate();

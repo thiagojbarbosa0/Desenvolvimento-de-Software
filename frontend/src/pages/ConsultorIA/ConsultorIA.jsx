@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { api } from '../services/api.js';
+import { api } from '../../services/api.js';
 
 function ConsultorIA() {
   const [mensagemAtual, setMensagemAtual] = useState(""); 

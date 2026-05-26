@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { api } from '../services/api.js';
+import { api } from '../../services/api.js';
 import { useNavigate } from 'react-router-dom';
 import '../Dashboard.css';
 

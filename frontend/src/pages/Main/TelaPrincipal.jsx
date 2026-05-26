@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import '../TelaPrincipal.css';
-import MostrarLogo from '../assets/components.jsx';
+import MostrarLogo from '../../assets/components.jsx';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 
 function TelaPrincipal() {
