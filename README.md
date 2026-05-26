@@ -206,3 +206,11 @@ Criados automaticamente ao subir o projeto:
 - Consultor de nutrição via chat com IA
 - Geração de plano alimentar personalizado
 - Fallback local caso a API do Gemini esteja indisponível
+
+
+## Testes
+
+-Os testes devem ser preferencialmente realizados em ambiente virtual 
+principalmente para a garantia de compatibilidade dos requisitos.
+execute o seguinte comando:
+pip install pytest passlib bcrypt pytest-mock && python -m pytest testes/testes_unitarios/test_nutriai_logic.py
