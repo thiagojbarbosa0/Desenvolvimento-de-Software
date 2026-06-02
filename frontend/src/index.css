@@ -1,3 +1,30 @@
+/*declaração de fontes externas*/
+@font-face {
+  font-family: 'Informal Roman';
+  src: url('src/assets/fonts/INFROMAN.TTF') 
+  format('truetype');
+}
+
+@font-face {
+  font-family: 'Cabin';
+  src: url('src/assets/fonts/Cabin.ttf')
+  format('truetype');
+}
+
+@font-face {
+  font-family: 'GoogleSansFlex';
+  src: url('src/assets/fonts/GoogleSansFlex.ttf')
+  format('truetype');
+
+}
+
+@font-face {
+  font-family: 'Comme';
+  src: url('src/assets/fonts/Comme.ttf')
+  format('truetype');
+}
+
+/******************************************************************************************************************************/
 /*tirando margem chata de todas as telas e colocando o fundo na cor branca*/
 body{
   height: 100vh;
@@ -23,13 +50,14 @@ body{
   background-color:#5FB65C;
   border-radius: 0px 0px 20px 0px;
   border: 1px solid black;
-  
+  box-shadow:  0 6px 25px rgba(0, 0, 0, 0.2),
+  inset 0 3px 6px rgba(0, 0, 0, 0.30);
 }
 
 #logo_texto {
-  font-family: 'Informal Roman';
-  font-size: 90px;
-  color: white;
+  font-family: 'Cabin';
+  font-size: 64px;
+  color: #07452C;
   text-shadow:
     -1px -1px 0 #000,
      1px -1px 0 #000,

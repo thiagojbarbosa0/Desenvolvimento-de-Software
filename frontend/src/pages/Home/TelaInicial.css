@@ -1,17 +1,3 @@
-/*Registro de fontes externas*/
-@font-face {
-  font-family: 'Informal Roman';
-  src: url('src/assets/fonts/INFROMAN.TTF') 
-  format('truetype');
-}
-
-@font-face {
-  font-family: 'Inika-Regular';
-  src: url('src/assets/fonts/Inika-Regular.ttf')
-  format('truetype');
-}
-/******************************************************************************************************************************/
-
 #saudacao{
   display: flex;
   flex-direction: column;
@@ -20,18 +6,26 @@
 }
 
 #texto_saudacao {
-  font-family: 'Inika-Regular';
+  font-family: 'Cabin';
   font-size: 100px;
+  font-weight: bold;
   -webkit-text-fill-color: black;
   
+}
+
+#centralizadora{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 /******************************************************************************************************************************/
 
 #descricao{
   width: 90%;
-  max-width: 2200px;
+  max-width: 709px;
   height: auto;
-  min-height: 364px;
+  min-height: 247px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -39,64 +33,56 @@
 }
 
 #texto_descricao {
-  font-family:'Inika-Regular';
-  font-size: 50px;
+  font-family:'GoogleSansFlex';
+  font-size: 36px;
   text-align: center;
 }
 /******************************************************************************************************************************/
 
 /*Organizando o container principal*/
-#botoes_tela_inicial {
+#botoes_TelaInicial {
   display: flex;
   flex-direction: row; 
   justify-content: center; 
   gap: 50px; 
   margin-top: 40px; 
 }
-
 /*Selecionando os componentes do container e os organizando*/
-#botao_continuar,
-#Criar_conta {
+#botao_Entrar,#Criar_conta {
   display: flex;
   flex-direction: column;
   align-items: center; 
   gap: 10px; 
 }
-/*Estilização do botão Continuar*/
-#botao_continuar button {
+
+/*Estilização do botão Entrar*/
+#botao_Entrar button {
   background-color: #5FB65C;
-  width: 345px;
-  height: 98px;
+  width: 348px;
+  height: 109px;
   border-radius: 20px 20px 20px 20px;
-  font-family: 'Inika-Regular';
-  font-size: 45px;
+  -webkit-text-fill-color: #FFFFFF
+
 }
-/*Estilização do texto de Continuar*/
-#botao_continuar p{
-  display: flex;
-  flex-direction: column;
-  justify-content:space-evenly;
-  align-items: center;
-  font-family: 'Inika-Regular';
-  font-size: 30px;
+/*Estilização do texto de status de conta*/
+#botao_Entrar p{
+  font-family: 'GoogleSansFlex';
+  font-size: 28px;
+  -webkit-text-fill-color: #000000
 }
 
 /*Estilização do botão Criar Conta*/
 #Criar_conta button {
   background-color: #F6F6F6;
-  width: 538px;
-  height: 94px;
+  width: 348px;
+  height: 109px;
   border-radius: 20px 20px 20px 20px;
-  font-family: 'Inika-Regular';
-  font-size: 45px;
+  font-family: 'Comme';
+  font-size: 40px;
 }
 /*Estilização do texto Criar Conta*/
 #Criar_conta {
-  display: flex;
-  flex-direction: column;
-  justify-content:space-evenly;
-  align-items: center;
-  font-family: 'Inika-Regular';
+  font-family: 'Comme';
   font-size: 30px;
 }
 
