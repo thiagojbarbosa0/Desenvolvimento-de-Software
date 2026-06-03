@@ -1,20 +1,21 @@
 /* 1. A Caixa Principal do Formulário */
 #formulario_login {
     background-color: #FAFAFA; 
-    width: 400px; 
+    width: 553px;
+    height: 717px; 
     margin: 40px auto 0 auto; 
     border-radius: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
     border: 1px solid #ddd;
-    
     display: flex;
     flex-direction: column;
 }
 
 /* 2. O Cabeçalho (Título e a Linha) */
 #formulario_login h2 {
+    font-family: 'GoogleSansFlex';
     text-align: center;
-    font-size: 32px;
+    font-size: 40px;
     font-weight: normal;
     color: #444;
     margin: 0;
@@ -32,8 +33,9 @@
 
 /* 4. Textos acima dos inputs */
 #formulario_login p {
+    font-family: 'GoogleSansFlex';
     margin: 0 0 5px 0; 
-    font-size: 18px;
+    font-size: 28px;
     color: #333;
 }
 
@@ -48,13 +50,20 @@
     font-size: 16px;
 }
 
+::placeholder {
+    color: #B3B3B3;
+    font-family: 'GoogleSansFlex';
+    font-size: 28px;
+}
+
 /* 6. O Link "Esqueci minha senha" */
-#esqueci_senha {
+div #esqueci_senha {
+    font-family: 'GoogleSansFlex';
     text-align: right;
-    color: #3E8E41; 
-    font-size: 14px !important;
+    -webkit-text-fill-color: #3A7538; 
+    font-size: 20px;
     font-weight: bold;
-    margin-top: 8px !important;
+    margin-top: 8px;
     cursor: pointer;
 }
 

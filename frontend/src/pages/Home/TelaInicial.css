@@ -1,4 +1,4 @@
-#saudacao{
+#saudacao {
   display: flex;
   flex-direction: column;
   justify-content:space-evenly;
@@ -10,10 +10,9 @@
   font-size: 100px;
   font-weight: bold;
   -webkit-text-fill-color: black;
-  
 }
 
-#centralizadora{
+#centralizadora {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -21,7 +20,7 @@
 }
 /******************************************************************************************************************************/
 
-#descricao{
+#descricao {
   width: 90%;
   max-width: 709px;
   height: auto;
@@ -39,13 +38,13 @@
 }
 /******************************************************************************************************************************/
 
-/*Organizando o container principal*/
+/*Organizando o container principal dos botões*/
 #botoes_TelaInicial {
   display: flex;
   flex-direction: row; 
   justify-content: center; 
-  gap: 50px; 
-  margin-top: 40px; 
+  gap: 300px; 
+  margin-top: 150px; 
 }
 /*Selecionando os componentes do container e os organizando*/
 #botao_Entrar,#Criar_conta {
@@ -57,15 +56,18 @@
 
 /*Estilização do botão Entrar*/
 #botao_Entrar button {
+  box-shadow: 0px 6px 0px hsla(130, 43%, 53%, 0.521);
   background-color: #5FB65C;
   width: 348px;
   height: 109px;
-  border-radius: 20px 20px 20px 20px;
-  -webkit-text-fill-color: #FFFFFF
-
+  border-radius: 25px 25px 25px 25px;
+  -webkit-text-fill-color: #FFFFFF;
+  font-family: 'Comme';
+  font-size: 40px;
 }
+
 /*Estilização do texto de status de conta*/
-#botao_Entrar p{
+#botao_Entrar p {
   font-family: 'GoogleSansFlex';
   font-size: 28px;
   -webkit-text-fill-color: #000000
@@ -73,17 +75,20 @@
 
 /*Estilização do botão Criar Conta*/
 #Criar_conta button {
+  box-shadow: 0px 6px 0px lab(47.04% -0.97 0.28 / 0.329);
   background-color: #F6F6F6;
   width: 348px;
   height: 109px;
-  border-radius: 20px 20px 20px 20px;
+  border-radius: 25px 25px 25px 25px;
   font-family: 'Comme';
   font-size: 40px;
+  -webkit-text-fill-color: #0C3E17;
 }
 /*Estilização do texto Criar Conta*/
-#Criar_conta {
-  font-family: 'Comme';
-  font-size: 30px;
+#Criar_conta p {
+  font-family: 'GoogleSansFlex';
+  font-size: 28px;
+  -webkit-text-fill-color: #000000
 }
 
 /******************************************************************************************************************************/

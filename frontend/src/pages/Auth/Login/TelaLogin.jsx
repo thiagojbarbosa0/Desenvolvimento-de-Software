@@ -1,6 +1,6 @@
 import './TelaLogin.css';
-import { MostrarLogoEstendido } from '../../../assets/components.jsx';
 import { useNavigate } from 'react-router-dom';
+import MostrarLogo from '../../../assets/components.jsx';
 import { useState } from 'react';
 import { api } from '../../../services/api.js';
 
@@ -39,7 +39,7 @@ function TelaLogin() {
 
   return (
     <>
-      <MostrarLogoEstendido />
+      <MostrarLogo />
       <div id='TelaLogin'>
         <div id='formulario_login'>
           <form onSubmit={handleLogin}>
@@ -48,6 +48,7 @@ function TelaLogin() {
             <p id="entrada_email">Email ou nome de usuário</p>
             <input
               type='text'
+              placeholder='digite seu login'
               className='input_padrao input_login'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -57,6 +58,7 @@ function TelaLogin() {
               <p id='entrada_senha'>Digite sua senha</p>
               <input
                 type='password'
+                placeholder='digite sua senha'
                 className='input_padrao input_login'
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
