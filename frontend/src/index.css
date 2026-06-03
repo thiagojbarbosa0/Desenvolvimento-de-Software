@@ -24,6 +24,12 @@
   format('truetype');
 }
 
+@font-face {
+  font-family: 'Inika-Regular';
+  src: url('src/assets/fonts/Inika-Regular.ttf')
+  format('truetype');
+  }
+
 /******************************************************************************************************************************/
 /*tirando margem chata de todas as telas e colocando o fundo na cor branca*/
 body{
@@ -95,10 +101,10 @@ body{
      1px -1px 0 #000,
     -1px  1px 0 #000,
      1px  1px 0 #000;
-
 }
+
 /******************************************************************************************************************************/
-/*estilizando a entrada(input)padrão*/
+/*estilizando a entrada(input)padrão###  verificar se está sendo utilizada em algum lugar, se não, deletar*/
 .input_padrao {
     border-radius: 20px 20px 20px 20px;
     width: 447px;

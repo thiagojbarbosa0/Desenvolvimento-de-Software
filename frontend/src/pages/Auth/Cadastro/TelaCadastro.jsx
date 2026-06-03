@@ -54,10 +54,9 @@ function TelaCadastro() {
       <MostrarLogoEstendido />
       <div id='TelaLogin'>
         <div id='formulario_login'>
+          <h1>Informações de usuário</h1>
           <form onSubmit={handleCadastro}>
-            <div><h2>Criar conta</h2></div>
-
-            <p>Nome completo</p>
+            <p>Nome do Usuário</p>
             <input
               type='text'
               className='input_padrao input_login'
@@ -65,7 +64,7 @@ function TelaCadastro() {
               onChange={(e) => setNome(e.target.value)}
             />
 
-            <p>E-mail</p>
+            <p>Digite seu e-mail</p>
             <input
               type='email'
               className='input_padrao input_login'
@@ -74,7 +73,7 @@ function TelaCadastro() {
             />
 
             <div>
-              <p>Senha</p>
+              <p>Crie uma senha</p>
               <input
                 type='password'
                 className='input_padrao input_login'
@@ -84,7 +83,7 @@ function TelaCadastro() {
             </div>
 
             <div>
-              <p>Confirmar senha</p>
+              <p>Confirme sua senha</p>
               <input
                 type='password'
                 className='input_padrao input_login'

@@ -42,9 +42,10 @@ function TelaLogin() {
       <MostrarLogo />
       <div id='TelaLogin'>
         <div id='formulario_login'>
+          <div id='titulo_login'>
+              <h2>Login</h2>
+          </div>
           <form onSubmit={handleLogin}>
-            <div><h2>Login</h2></div>
-
             <p id="entrada_email">Email ou nome de usuário</p>
             <input
               type='text'
@@ -55,7 +56,7 @@ function TelaLogin() {
             />
 
             <div>
-              <p id='entrada_senha'>Digite sua senha</p>
+              <p id='entrada_senha'>Senha</p>
               <input
                 type='password'
                 placeholder='digite sua senha'

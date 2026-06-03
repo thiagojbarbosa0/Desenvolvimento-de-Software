@@ -1,0 +1,15 @@
+h1 {
+    font-family: 'Inika-Regular';
+    font-size: 40px;
+    color: #000000; 
+}
+
+p {
+    font-family: 'Inika-Regular';
+    font-size: 25px;
+    color: #000000; 
+}
+
+button {
+    margin-bottom: 50px;
+}
