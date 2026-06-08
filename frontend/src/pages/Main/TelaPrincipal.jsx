@@ -32,20 +32,34 @@ function TelaPrincipal() {
 
   const paginaAtiva = obterPaginaAtiva();
 
+  // Mapeia se a rota atual é a da dieta
+  const éRotaDieta = location.pathname.includes('dieta');
+
   return (
     <div className='limitador_tags'>
       
-      <header className="topo-logo">
-        <MostrarLogo/>
-        <div className='caixa_cabecalho'>
-          <h1>{paginaAtiva} - Sistema NutriAI</h1>
-        </div>   
-      </header>
+      {/* 🎯 SE FOR DIETA: Renderiza apenas a logo solta (fora do cabeçalho) para não criar bloco vertical */}
+      {éRotaDieta && (
+        <div style={{ position: 'absolute', top: '10px', left: '40px', zIndex: 10 }}>
+          <MostrarLogo />
+        </div>
+      )}
+
+      {/* 🎯 SE NÃO FOR DIETA: O header completo entra no DOM normalmente, mantendo o Dashboard intacto */}
+      {!éRotaDieta && (
+        <header className="topo-logo">
+          <MostrarLogo/>
+          <div className='caixa_cabecalho'>
+            <h1>{paginaAtiva} - Sistema NutriAI</h1>
+          </div>   
+        </header>
+      )}
       
       <div className='corpo-layout'>
         <aside className="barra_lateral">
           <nav>
-            <ul>
+            {/* Adiciona um espaçamento no topo do menu apenas na dieta para compensar a logo absoluta */}
+            <ul style={éRotaDieta ? { marginTop: '70px' } : {}}>
               {menus.map((item) => (
                 <li 
                   key={item.nome} 

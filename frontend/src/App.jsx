@@ -5,6 +5,7 @@ import TelaCadastro from './pages/Auth/Cadastro/TelaCadastro.jsx';
 import TelaPrincipal from './pages/Main/TelaPrincipal.jsx';
 import Dashboard from './pages/Dashboard/Dashboard.jsx';
 import ConsultorIA from './pages/ConsultorIA/ConsultorIA.jsx';
+import MinhaDieta from './pages/MinhaDieta/MinhaDieta.jsx';
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
         <Route path='/cadastro' element={<TelaCadastro />} />
         <Route path='/tela-principal' element={<TelaPrincipal />} >
           <Route index element={<ConsultorIA />} />
-          <Route path='dashboard' element={<Dashboard />} />  
+          <Route path='dashboard' element={<Dashboard />} />
+          <Route path='dieta' element={<MinhaDieta />} />
         </Route>
       </Routes>
     </BrowserRouter>
