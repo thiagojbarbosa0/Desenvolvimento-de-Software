@@ -45,4 +45,14 @@ export function FormularioPadrao() {
     )
 }
 
+export function HeaderPagina({ titulo }) {
+  return (
+    <header className="topo-logo">
+      <div className="caixa_cabecalho">
+        <h1>{titulo} - Sistema NutriAI</h1>
+      </div>
+    </header>
+  );
+}
+
 export default MostrarLogo;

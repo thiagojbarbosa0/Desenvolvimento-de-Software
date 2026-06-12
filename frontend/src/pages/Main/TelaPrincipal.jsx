@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import './TelaPrincipal.css';
-import MostrarLogo from '../../assets/components.jsx';
+import MostrarLogo, { HeaderPagina } from '../../assets/components.jsx';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 
 function TelaPrincipal() {
@@ -9,6 +9,7 @@ function TelaPrincipal() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+
     if (!token) {
       navigate('/tela-login');
     }
@@ -32,54 +33,43 @@ function TelaPrincipal() {
 
   const paginaAtiva = obterPaginaAtiva();
 
-  // Mapeia se a rota atual é a da dieta
-  const éRotaDieta = location.pathname.includes('dieta');
-
   return (
-    <div className='limitador_tags'>
-      
-      {/* 🎯 SE FOR DIETA: Renderiza apenas a logo solta (fora do cabeçalho) para não criar bloco vertical */}
-      {éRotaDieta && (
-        <div style={{ position: 'absolute', top: '10px', left: '40px', zIndex: 10 }}>
-          <MostrarLogo />
-        </div>
-      )}
-
-      {/* 🎯 SE NÃO FOR DIETA: O header completo entra no DOM normalmente, mantendo o Dashboard intacto */}
-      {!éRotaDieta && (
-        <header className="topo-logo">
-          <MostrarLogo/>
-          <div className='caixa_cabecalho'>
-            <h1>{paginaAtiva} - Sistema NutriAI</h1>
-          </div>   
-        </header>
-      )}
-      
-      <div className='corpo-layout'>
-        <aside className="barra_lateral">
-          <nav>
-            {/* Adiciona um espaçamento no topo do menu apenas na dieta para compensar a logo absoluta */}
-            <ul style={éRotaDieta ? { marginTop: '70px' } : {}}>
-              {menus.map((item) => (
-                <li 
-                  key={item.nome} 
-                  className={item.nome === paginaAtiva ? "ativo" : ""}
-                  onClick={() => navigate(item.rota)}
-                >
-                  <span className="icone">{item.icone}</span>
-                  <span className="texto">{item.nome}</span>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </aside>
-        
-        <div style={{ flex: 1, display: 'flex' }}>
-          <Outlet />
-        </div>
-
+    <>
+      {location.pathname.includes('/dieta') ? (
+      <MostrarLogo />
+    ) : (
+      <div className="topo">
+        <MostrarLogo />
+        <HeaderPagina titulo={paginaAtiva} />
       </div>
-    </div>
+    )}
+
+
+      <div className="limitador_tags">
+        <div className="corpo-layout">
+          <aside className="barra_lateral">
+            <nav>
+              <ul>
+                {menus.map((item) => (
+                  <li
+                    key={item.nome}
+                    className={item.nome === paginaAtiva ? 'ativo' : ''}
+                    onClick={() => navigate(item.rota)}
+                  >
+                    <span className="icone">{item.icone}</span>
+                    <span className="texto">{item.nome}</span>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </aside>
+
+          <div style={{ flex: 1, display: 'flex' }}>
+            <Outlet />
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 

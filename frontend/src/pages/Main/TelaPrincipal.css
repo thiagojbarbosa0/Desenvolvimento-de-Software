@@ -9,28 +9,39 @@
 }
 
 /* ======================================================
-   CABEÇALHO E LOGO
+   CABEÇALHO
 ====================================================== */
-header {
+
+.topo {
     display: flex;
     align-items: center;
+    width: 100%;
+}
+
+.topo-logo {
+    flex: 1;
+    display: flex;
 }
 
 .caixa_cabecalho {
-    border: 1px solid #ccc;
+    flex: 1;
     height: 98px;
-    width: 100%;
-    border-radius: 0px 0px 0px 20px;
+
+    border: 1px solid #ccc;
+    border-radius: 0 0 0 20px;
+
     display: flex;
     align-items: center;
-    padding-left: 20px; 
+
+    padding-left: 20px;
+    box-sizing: border-box;
 }
 
 h1 {
+    margin: 0;
     font-family: 'Inika-Regular', serif;
     font-size: 40px;
     font-weight: normal;
-    margin: 0; /* Impede que margens invisíveis empurrem o layout */
 }
 
 /* ======================================================

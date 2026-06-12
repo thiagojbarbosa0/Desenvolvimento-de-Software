@@ -1,7 +1,8 @@
 /* Área principal da tela (lado direito) */
 .dieta-container {
   width: 100%;
-  padding: 40px;
+  padding: 0px;
+  margin-top: -90px;
   background-color: #fafbfa; /* Fundo levemente esbranquiçado do mockup */
   min-height: 100vh;
   box-sizing: border-box;
@@ -18,6 +19,7 @@
   margin-bottom: 45px;
   border-bottom: 1px solid #e3e8e4;
   padding-bottom: 8px;
+
 }
 
 .dieta-aba {
