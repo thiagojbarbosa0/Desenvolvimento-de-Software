@@ -1,33 +1,31 @@
+"""
+ai.py
+Responsável por toda interação com a API do Gemini.
+Inclui fallback local quando a chave não está disponível.
+"""
 from __future__ import annotations
+
 import json
-import os
+import time
 from typing import Any, Dict, Optional
-from dotenv import load_dotenv
+
+from backend.config import settings
 from backend.plan import generate_fallback_plan, default_motivational_phrase
 
 try:
     from google import genai
-except Exception:
+except ImportError:
     genai = None
 
-load_dotenv()
+_MAX_RETRIES = 3
+_RETRY_DELAY = 2  # segundos
 
-
-def gemini_client() -> Optional[Any]:
-    if genai is None:
-        return None
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        print("Erro: API Key não encontrada no arquivo .env")
-        return None
-
-    try:
-        client = genai.Client(api_key=api_key)
-        return client
-    except Exception as e:
-        print(f"Erro ao criar cliente Gemini: {e}")
-        return None
-
+SYSTEM_PROMPT_CHAT = (
+    "Você é um consultor de nutrição e saúde chamado NutriAI. "
+    "Responda de forma clara, acolhedora e prática. "
+    "Não dê diagnósticos médicos. "
+    "Responda sempre em português."
+)
 
 PLAN_SCHEMA: Dict[str, Any] = {
     "type": "object",
@@ -46,25 +44,59 @@ PLAN_SCHEMA: Dict[str, Any] = {
         "next_actions": {"type": "array", "items": {"type": "string"}},
     },
     "required": [
-        "summary",
-        "daily_goal",
-        "motivational_phrase",
-        "breakfast",
-        "lunch",
-        "dinner",
-        "snacks",
-        "hydration",
-        "shopping_list",
-        "caution_notes",
-        "crisis_support",
-        "next_actions",
+        "summary", "daily_goal", "motivational_phrase",
+        "breakfast", "lunch", "dinner", "snacks",
+        "hydration", "shopping_list", "caution_notes",
+        "crisis_support", "next_actions",
     ],
     "additionalProperties": False,
 }
 
 
+def _get_client() -> Optional[Any]:
+    """Retorna cliente Gemini ou None se indisponível."""
+    if genai is None:
+        return None
+    api_key = settings.gemini_api_key
+    if not api_key:
+        print("[NutriAI] GEMINI_API_KEY não configurada — usando fallback local.")
+        return None
+    try:
+        return genai.Client(api_key=api_key)
+    except Exception as e:
+        print(f"[NutriAI] Erro ao criar cliente Gemini: {e}")
+        return None
+
+
+def _call_gemini(client: Any, contents: str, *, json_schema: Optional[dict] = None) -> Optional[str]:
+    """
+    Chama o Gemini com retry automático.
+    Retorna o texto da resposta ou None em caso de falha persistente.
+    """
+    config: dict = {}
+    if json_schema:
+        config = {"response_mime_type": "application/json", "response_json_schema": json_schema}
+
+    for attempt in range(1, _MAX_RETRIES + 1):
+        try:
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=contents,
+                config=config if config else None,
+            )
+            text = (response.text or "").strip()
+            return text if text else None
+        except Exception as e:
+            print(f"[NutriAI] Gemini erro (tentativa {attempt}/{_MAX_RETRIES}): {type(e).__name__}: {e}")
+            if attempt < _MAX_RETRIES:
+                time.sleep(_RETRY_DELAY)
+
+    return None
+
+
 def generate_plan(profile: Dict[str, Any]) -> Dict[str, Any]:
-    client = gemini_client()
+    """Gera plano nutricional via Gemini; cai no fallback se necessário."""
+    client = _get_client()
     if client is None:
         return generate_fallback_plan(profile)
 
@@ -96,40 +128,26 @@ Regras:
 - Responda somente em JSON válido, seguindo o schema.
 """
 
-    try:
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=prompt,
-            config={
-                "response_mime_type": "application/json",
-                "response_json_schema": PLAN_SCHEMA,
-            },
-        )
-        text = response.text or "{}"
-        data = json.loads(text)
-        return data
-    except Exception:
-        return generate_fallback_plan(profile)
+    text = _call_gemini(client, prompt, json_schema=PLAN_SCHEMA)
+    if text:
+        try:
+            return json.loads(text)
+        except json.JSONDecodeError:
+            print("[NutriAI] JSON inválido na resposta do plano — usando fallback.")
+
+    return generate_fallback_plan(profile)
 
 
-def generate_motivational_message(profile: Dict[str, Any]) -> str:
-    client = gemini_client()
-    fallback = default_motivational_phrase(
-        profile.get("goal", "Outro"),
-        profile.get("motivations", ""),
-        profile.get("name", "Você"),
-    )
+def generate_chat_response(mensagem: str) -> str:
+    """Responde a uma mensagem de chat via Gemini; cai no fallback se necessário."""
+    client = _get_client()
     if client is None:
-        return fallback
-    try:
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=(
-                f"Crie uma frase curta, humana e motivadora para {profile.get('name')}, "
-                f"que quer {profile.get('goal')}. Motivações: {profile.get('motivations')}."
-            ),
-        )
-        text = (response.text or "").strip()
-        return text[:220] if text else fallback
-    except Exception:
-        return fallback
+        return "Desculpe, o serviço de IA não está disponível no momento."
+
+    contents = f"{SYSTEM_PROMPT_CHAT}\n\nPergunta do usuário: {mensagem}"
+    text = _call_gemini(client, contents)
+
+    if text:
+        return text[:2000]  # limita tamanho da resposta
+
+    return "O serviço de IA está temporariamente sobrecarregado. Aguarde alguns instantes e tente novamente."
