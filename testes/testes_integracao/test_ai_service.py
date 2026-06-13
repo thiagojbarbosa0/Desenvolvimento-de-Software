@@ -1,58 +1,70 @@
 import pytest
 import sys
+import os
 
-# Criamos uma fixture para injetar a chave falsa ANTES de importar o código real
+# Garante que o diretório raiz esteja no path para imports corretos
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
+
 @pytest.fixture(autouse=True)
 def configurar_ambiente_mock(monkeypatch):
-    # Força a variável de ambiente que o SDK da Google caça na inicialização
+    """Injeta chave falsa antes de qualquer import de módulos que a exijam."""
     monkeypatch.setenv("GEMINI_API_KEY", "chave_falsa_para_o_ci")
-    
-    # Injeta também no seu objeto de configurações local, caso use pydantic-settings
-    try:
-        from config import settings
-        monkeypatch.setattr(settings, "gemini_api_key", "chave_falsa_para_o_ci")
-    except ImportError:
-        pass # Se o arquivo config não estiver na raiz, o setenv acima já protege o SDK
-    
-    # Se o módulo já tiver sido importado por outro teste, removemos para forçar a reinicialização
-    if 'ai_service' in sys.modules:
-        del sys.modules['ai_service']
+    monkeypatch.setenv("DATABASE_URL", "sqlite:///./test_nutriflow.db")
 
-def test_generate_nutritional_plan_com_sucesso(mocker):
-    # Adiciona o diretório pai ao sys.path para garantir o import correto dentro da pasta tests/
-    import os
-    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-    
-    import ai_service
-    from schemas import ProfileCreate
+    # Remove módulos em cache para forçar re-importação com o env correto
+    for mod in ["backend.ai", "backend.config"]:
+        sys.modules.pop(mod, None)
 
-    # Criamos o Mock estruturado com a propriedade .text retornando a string JSON
-    mock_response = mocker.Mock()
-    mock_response.text = '{"summary": "Plano Mockado", "breakfast": ["Tapioca"], "lunch": [], "dinner": [], "snacks": []}'
 
-    # Interceptamos a chamada no client do ai_service
-    mocker.patch.object(ai_service.client.models, 'generate_content', return_value=mock_response)
+def test_generate_plan_com_sucesso(mocker):
+    from backend.ai import generate_plan
+    from backend.schemas import ProfileCreate
 
-    # Dados de teste fake para o Schema
-    perfil_teste = ProfileCreate(goal="Hipertrofia", weight_kg=80, height_cm=180, stress_level=3)
+    mock_text = (
+        '{"summary": "Plano Mockado", "daily_goal": "Comer bem", '
+        '"motivational_phrase": "Vai!", "breakfast": ["Tapioca"], '
+        '"lunch": [], "dinner": [], "snacks": [], "hydration": "2L", '
+        '"shopping_list": [], "caution_notes": [], '
+        '"crisis_support": "Continue!", "next_actions": []}'
+    )
 
-    # Executamos a função
-    resultado = ai_service.generate_nutritional_plan(perfil_teste)
+    mocker.patch("backend.ai._get_client", return_value=mocker.Mock())
+    mocker.patch("backend.ai._call_gemini", return_value=mock_text)
 
-    # Validamos se o seu código parseou o JSON com sucesso
+    perfil_teste = ProfileCreate(
+        user_id="test-uuid",
+        goal="Emagrecimento",
+        weight_kg=80,
+        height_cm=180,
+        stress_level=3,
+        age=30,
+        biological_sex="Masculino",
+        activity_level="Moderado",
+        sleep_hours=7.0,
+        sleep_minutes=0,
+    )
+
+    resultado = generate_plan(perfil_teste.dict())
     assert resultado["summary"] == "Plano Mockado"
     assert "Tapioca" in resultado["breakfast"]
 
 
-def test_responder_mensagem_chat_com_sucesso(mocker):
-    import ai_service
+def test_generate_chat_response_com_sucesso(mocker):
+    from backend.ai import generate_chat_response
 
-    # Mock simples de texto puro para o chat
-    mock_response = mocker.Mock()
-    mock_response.text = "Olá! Eu sou o NutriAI simulado."
+    mocker.patch("backend.ai._get_client", return_value=mocker.Mock())
+    mocker.patch("backend.ai._call_gemini", return_value="Olá! Eu sou o NutriAI simulado.")
 
-    mocker.patch.object(ai_service.client.models, 'generate_content', return_value=mock_response)
-
-    resultado = ai_service.responder_mensagem_chat("Olá")
-    
+    resultado = generate_chat_response("Olá")
     assert resultado == "Olá! Eu sou o NutriAI simulado."
+
+
+def test_generate_chat_response_sem_cliente(mocker):
+    """Deve retornar mensagem de fallback quando Gemini não está disponível."""
+    from backend.ai import generate_chat_response
+
+    mocker.patch("backend.ai._get_client", return_value=None)
+
+    resultado = generate_chat_response("Olá")
+    assert "não está disponível" in resultado.lower()
