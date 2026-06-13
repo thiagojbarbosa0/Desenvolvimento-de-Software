@@ -1,34 +1,33 @@
-/* Área principal da tela (lado direito) */
 .dieta-container {
   width: 100%;
-  padding: 0px;
-  margin-top: -90px;
-  background-color: #fafbfa; /* Fundo levemente esbranquiçado do mockup */
-  min-height: 100vh;
+  padding: 8px 20px 30px 20px;  /* topo bem reduzido */
+  background-color: #fafbfa;
   box-sizing: border-box;
   font-family: 'Inter', -apple-system, sans-serif;
 }
 
-/* =========================================================================
-   ABAS SUPERIORES
-   ========================================================================= */
 .dieta-abas-container {
   display: flex;
-  justify-content: center; /* Centraliza as abas na tela */
-  gap: 50px;               /* Distanciamento largo entre elas */
-  margin-bottom: 45px;
+  justify-content: center;
+  gap: 50px;
+  margin-bottom: 25px;
   border-bottom: 1px solid #e3e8e4;
   padding-bottom: 8px;
 
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #fafbfa; /* mesma cor do .dieta-container, pra não ficar transparente */
+  padding-top: 8px;
 }
 
 .dieta-aba {
   background: none;
   border: none;
   font-family: 'GoogleSansFlex';
-  font-size: 36px;        /* Tamanho grande das fontes do mockup */
+  font-size: 36px;
   font-weight: 500;
-  color: #788d7d;         /* Cor acinzedada para abas inativas */
+  color: #788d7d;
   cursor: pointer;
   padding: 0 10px 12px 10px;
   position: relative;
@@ -39,13 +38,11 @@
   color: #2c4232;
 }
 
-/* Estilo da Aba Selecionada ("Hoje") */
 .dieta-aba.ativa {
-  color: #2c4232;         /* Verde escuro predominante */
+  color: #2c4232;
   font-weight: 600;
 }
 
-/* Linha verde embaixo da aba ativa */
 .dieta-aba.ativa::after {
   content: '';
   position: absolute;
@@ -57,95 +54,76 @@
   border-radius: 4px;
 }
 
-/* =========================================================================
-   GRID DE REFEIÇÕES
-   ========================================================================= */
 .dieta-grid-refeicoes {
   display: grid;
-  /* Alinha os cards em colunas responsivas automáticas */
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 35px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-/* =========================================================================
-   ESTILIZAÇÃO DOS CARDS MISTOS (ESTÁTICO / DINÂMICO)
-   ========================================================================= */
 .dieta-card-misto {
-  position: relative;     /* Permite posicionar elementos absolutamente dentro dele */
+  position: relative;
   width: 100%;
-  border-radius: 28px;    /* Bordas bem arredondadas do mockup */
-  overflow: hidden;       /* Corta o conteúdo nas bordas arredondadas */
+  border-radius: 28px;
+  overflow: hidden;
   transition: transform 0.2s ease;
   display: flex;
   flex-direction: column;
-  
-  /* 🎯 SOLUÇÃO DO CORTE SUPERIOR: Removido o aspect-ratio rígido que esmagava a imagem.
-     Agora o card se adapta 100% à altura real do arquivo original sem decepar o topo. */
-  height: auto; 
+  height: auto;
 }
 
 .dieta-card-misto:hover {
   transform: translateY(-3px);
 }
 
-/* Imagem que serve de casca/fundo para o card */
 .dieta-card-bg {
   width: 100%;
-  height: auto;          /* Garante que a imagem exiba toda a sua proporção vertical nativa */
-  display: block;        
+  height: auto;
+  display: block;
 }
 
-/* Container do texto que flutua exatamente sobre a área branca da imagem */
 .dieta-card-overlay-conteudo {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  
-  /* 🎯 AJUSTE DE ALTURA DINÂMICA: Ocupa a porção inferior ideal sem conflitar com 
-     o título do meio do card. */
-  height: 40%;           
-  padding: 20px 35px 25px 35px; 
+  height: 40%;
+  padding: 20px 35px 25px 35px;
   box-sizing: border-box;
-  
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-/* Lista de ingredientes reais e dinâmicos */
 .dieta-dinamica-div {
-  display: block;         /* Mantém os elementos empilhados um abaixo do outro */
+  display: block;
   padding: 0;
   margin: 0;
   font-family: 'GoogleSansFlex', -apple-system, sans-serif;
-  font-size: 14px;        /* Tamanho casado perfeitamente com os cards estáticos */
-  color: #4a554e;         /* Cor cinza escura idêntica aos itens do Almoço e Jantar */
+  font-size: 14px;
+  color: #4a554e;
   line-height: 1.5;
   text-align: left;
 }
 
 .dieta-dinamica-div p {
-  margin: 0 0 3px 0;      /* Espaçamento limpo e sutil por linha */
-  color: #4a554e;         
+  margin: 0 0 3px 0;
+  color: #4a554e;
 }
 
-/* Adiciona o marcador de bolinha (bullet) caso queira ativar no futuro */
 .dieta-dinamica-lista li::before {
   content: "• ";
   color: #4a554e;
   margin-right: 4px;
 }
 
-/* Valor energético dinâmico renderizado no rodapé da imagem */
 .dieta-dinamica-calorias {
   display: block;
   font-family: 'GoogleSansFlex', -apple-system, sans-serif;
   font-size: 16px;
   font-weight: 600;
-  color: #4eb667;         /* O verde brilhante exato das calorias */
+  color: #4eb667;
   text-align: center;
-  margin-top: auto;       /* Força o elemento a colar na base do bloco */
+  margin-top: auto;
 }

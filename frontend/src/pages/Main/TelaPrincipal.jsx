@@ -9,18 +9,17 @@ function TelaPrincipal() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-
     if (!token) {
       navigate('/tela-login');
     }
   }, [navigate]);
 
   const menus = [
-    { nome: "Meu perfil", icone: "👤", rota: "/tela-principal/perfil" },
-    { nome: "Dashboard", icone: "🏠", rota: "/tela-principal/dashboard" },
-    { nome: "Comunidade", icone: "💬", rota: "/tela-principal/comunidade" },
-    { nome: "Minha dieta", icone: "🍲", rota: "/tela-principal/dieta" },
-    { nome: "Consultor IA", icone: "🤖", rota: "/tela-principal" },
+    { nome: "Meu perfil", icone: "person", rota: "/tela-principal/perfil" },
+    { nome: "Dashboard", icone: "check", rota: "/tela-principal/dashboard" },
+    { nome: "Comunidade", icone: "groups", rota: "/tela-principal/comunidade" },
+    { nome: "Minha dieta", icone: "favorite", rota: "/tela-principal/dieta" },
+    { nome: "Consultor IA", icone: "comment", rota: "/tela-principal" },
   ];
 
   const obterPaginaAtiva = () => {
@@ -34,9 +33,11 @@ function TelaPrincipal() {
   const paginaAtiva = obterPaginaAtiva();
 
   return (
-    <>
-      {location.pathname.includes('/dieta') ? (
-      <MostrarLogo />
+  <>
+    {location.pathname.includes('/dieta') ? (
+      <div className="logo-flutuante">
+        <MostrarLogo />
+      </div>
     ) : (
       <div className="topo">
         <MostrarLogo />
@@ -44,33 +45,32 @@ function TelaPrincipal() {
       </div>
     )}
 
+    <div className="limitador_tags">
+      <div className="corpo-layout">
+        <aside className={`barra_lateral ${location.pathname.includes('/dieta') ? 'barra_lateral-com-logo' : ''}`}>
+          <nav>
+            <ul>
+              {menus.map((item) => (
+                <li
+                  key={item.nome}
+                  className={item.nome === paginaAtiva ? 'ativo' : ''}
+                  onClick={() => navigate(item.rota)}
+                >
+                  <span className="icone material-symbols-outlined">{item.icone}</span>
+                  <span className="texto">{item.nome}</span>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </aside>
 
-      <div className="limitador_tags">
-        <div className="corpo-layout">
-          <aside className="barra_lateral">
-            <nav>
-              <ul>
-                {menus.map((item) => (
-                  <li
-                    key={item.nome}
-                    className={item.nome === paginaAtiva ? 'ativo' : ''}
-                    onClick={() => navigate(item.rota)}
-                  >
-                    <span className="icone">{item.icone}</span>
-                    <span className="texto">{item.nome}</span>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </aside>
-
-          <div style={{ flex: 1, display: 'flex' }}>
-            <Outlet />
-          </div>
+        <div className="area-conteudo">
+          <Outlet />
         </div>
       </div>
-    </>
-  );
+    </div>
+  </>
+);
 }
 
 export default TelaPrincipal;

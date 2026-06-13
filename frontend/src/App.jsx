@@ -6,6 +6,8 @@ import TelaPrincipal from './pages/Main/TelaPrincipal.jsx';
 import Dashboard from './pages/Dashboard/Dashboard.jsx';
 import ConsultorIA from './pages/ConsultorIA/ConsultorIA.jsx';
 import MinhaDieta from './pages/MinhaDieta/MinhaDieta.jsx';
+import MeuPerfil from './pages/MeuPerfil/MeuPerfil.jsx';
+import Comunidade from './pages/Comunidade/Comunidade.jsx';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
           <Route index element={<ConsultorIA />} />
           <Route path='dashboard' element={<Dashboard />} />
           <Route path='dieta' element={<MinhaDieta />} />
+          <Route path='perfil' element={<MeuPerfil />} />
+          <Route path='comunidade' element={<Comunidade />}/>
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,12 +1,12 @@
 import LogoIcon from './icons/Logo.svg'
 function MostrarLogo() {
     return(
-    <div id='logo'>
+    <>
       <div id='caixa_logo'>
       <img src={LogoIcon} width={84} height={84} alt="Logo" />
         <h1 id='logo_texto'>NutriAI</h1>
       </div>
-    </div>
+    </>
     )
 }
 /******************************************************************************************************************************/
