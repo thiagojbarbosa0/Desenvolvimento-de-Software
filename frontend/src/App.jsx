@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
 import TelaInicial from './pages/Home/TelaInicial.jsx';
 /*import TelaLogin from './pages/Auth/Login/TelaLogin.jsx';   lembrar de  modificar nas rotas também o caminho da tela de login original*/
 import TelaCadastro from './pages/Auth/Cadastro/TelaCadastro.jsx';
@@ -21,9 +22,9 @@ function App() {
         <Route path='/' element={<TelaInicial />} />
         <Route path='/tela-login' element={<TelaLoginEstepe />} />
         <Route path='/cadastro' element={<TelaCadastro />} />
-        <Route path='cadastro-inicial' element={<TelaCadastroInicial/>} />
+        <Route path='/cadastro-inicial' element={<TelaCadastroInicial/>} />
         <Route path='/recupera-senha' element={<RecuperaSenha />} />
-        <Route path='cadastro-metas' element={<TelaCadastroMetas/>} />
+        <Route path='/cadastro-metas' element={<TelaCadastroMetas/>} />
         <Route path='/tela-principal' element={<TelaPrincipal />} >
           <Route index element={<ConsultorIA />} />
           <Route path='dashboard' element={<Dashboard />} />

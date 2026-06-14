@@ -127,7 +127,7 @@ function TelaCadastroInicial() {
     // }
 
     // --- Simulação temporária (REMOVER quando back estiver pronto) ---
-    navigate('/tela-principal');
+    navigate('/cadastro-metas');
     setCarregando(false);
   };
 
