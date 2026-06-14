@@ -78,7 +78,9 @@ return (
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
             />
-            <p id='esqueci_senha'>Esqueci minha senha</p>
+            <p id='esqueci_senha'
+              onClick={() => navigate('/recupera-senha')}>Esqueci minha senha
+            </p>
           </div>
 
           {erro && (

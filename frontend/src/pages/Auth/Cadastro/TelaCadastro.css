@@ -1,15 +1,49 @@
-h1 {
-    font-family: 'Inika-Regular';
-    font-size: 40px;
-    color: #000000; 
+#formulario_login h1 {
+  font-family: 'Inika-Regular';
+  font-size: 40px;
+  color: #000000;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 25px 0 20px 0;
+  border-bottom: 1px solid #ddd;
 }
 
-p {
-    font-family: 'Inika-Regular';
-    font-size: 25px;
-    color: #000000; 
+#formulario_login p {
+font-family: 'Inika-Regular';
+font-size: 25px;
+color: #000000;
 }
 
-button {
-    margin-bottom: 50px;
+#formulario_login button {
+margin-bottom: 10px;
+}
+
+/* ======================================================
+   CHECKBOX "ACEITO RECEBER EMAIL"
+====================================================== */
+.cadastro-checkbox-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-left: 25px;
+  margin-top: -10px;
+}
+
+.cadastro-checkbox-container input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  cursor: pointer;
+  accent-color: #5fb65c;
+}
+
+.cadastro-checkbox-container label {
+  font-family: 'GoogleSansFlex', -apple-system, sans-serif;
+  font-size: 14px;
+  color: #555;
+  line-height: 1.4;
+  cursor: pointer;
 }

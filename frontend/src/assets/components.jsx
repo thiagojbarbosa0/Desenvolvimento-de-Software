@@ -46,6 +46,9 @@ export function FormularioPadrao() {
 }
 
 export function HeaderPagina({ titulo }) {
+  if (titulo == "Comunidade") {
+        var titulo = "Comunidade - Leia e Compartilhe Experiencias";
+        }
   return (
     <header className="topo-logo">
       <div className="caixa_cabecalho">
@@ -54,5 +57,22 @@ export function HeaderPagina({ titulo }) {
     </header>
   );
 }
+
+/* Casco do quadro de ajuda (aquele da tela de ajuda quando o usuário está recuperando a senha)*/
+export function CardAjudaShell({ titulo = 'Ajuda', children }) {
+  return (
+    <div className="card-ajuda-overlay">
+      <div className="card-ajuda">
+        <div className="card-ajuda-header">
+          <h2>{titulo}</h2>
+        </div>
+        <div className="card-ajuda-corpo">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 
 export default MostrarLogo;

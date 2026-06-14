@@ -4,7 +4,7 @@ import MostrarLogo from '../../../assets/components.jsx';
 import { useState } from 'react';
 import { api } from '../../../services/api.js';
 
-function TelaLogin() {
+function TelaLoginEstepe() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
@@ -64,7 +64,9 @@ function TelaLogin() {
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
               />
-              <p id='esqueci_senha'>Esqueci minha senha</p>
+              <p id='esqueci_senha'
+                onClick={() => navigate('/recupera-senha')}>Esqueci minha senha
+              </p>
             </div>
 
             {erro && (
@@ -90,4 +92,4 @@ function TelaLogin() {
   );
 }
 
-export default TelaLogin;
+export default TelaLoginEstepe;

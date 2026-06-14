@@ -1,0 +1,159 @@
+.cadastro-inicial-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px 20px 60px 20px;
+  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ======================================================
+   TÍTULO
+====================================================== */
+.cadastro-inicial-titulo {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.cadastro-inicial-titulo h1 {
+  font-family: 'Inika-Regular', serif;
+  font-size: 40px;
+  font-weight: normal;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.cadastro-inicial-titulo p {
+  font-size: 16px;
+  color: #788d7d;
+  margin: 0;
+  font-family: 'GoogleSansFlex', -apple-system, sans-serif;
+}
+
+/* ======================================================
+   CARD DO FORMULÁRIO
+====================================================== */
+.cadastro-inicial-card {
+  width: 100%;
+  background-color: white;
+  border: 1px solid #e3e8e4;
+  border-radius: 16px;
+  padding: 25px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-sizing: border-box;
+}
+
+.cadastro-inicial-linha {
+  display: flex;
+  gap: 20px;
+}
+
+.cadastro-inicial-campo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cadastro-inicial-campo label {
+  font-size: 14px;
+  color: #4a554e;
+  font-family: 'GoogleSansFlex', -apple-system, sans-serif;
+}
+
+.cadastro-inicial-campo input,
+.cadastro-inicial-campo select {
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  background-color: #fafbfa;
+  font-size: 16px;
+  color: #2c4232;
+  padding: 10px 12px;
+  font-family: 'GoogleSansFlex', -apple-system, sans-serif;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.cadastro-inicial-campo input:focus,
+.cadastro-inicial-campo select:focus {
+  border-color: #5fb65c;
+}
+
+.cadastro-inicial-campo select {
+  cursor: pointer;
+}
+
+/* ======================================================
+   CARD DO IMC
+====================================================== */
+.cadastro-inicial-card-imc {
+  background-color: #d1e7d1;
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 60px;
+}
+
+.cadastro-inicial-imc-titulo {
+  font-size: 15px;
+  color: #2c4232;
+  font-family: 'GoogleSansFlex', -apple-system, sans-serif;
+}
+
+.cadastro-inicial-imc-valor {
+  font-size: 32px;
+  font-weight: 700;
+  color: #2c4232;
+  font-family: 'GoogleSansFlex', -apple-system, sans-serif;
+  line-height: 1.1;
+}
+
+.cadastro-inicial-imc-legenda {
+  font-size: 13px;
+  color: #4a554e;
+  font-family: 'GoogleSansFlex', -apple-system, sans-serif;
+}
+
+/* ======================================================
+   ERRO
+====================================================== */
+.cadastro-inicial-erro {
+  color: #c0392b;
+  font-size: 14px;
+  margin: 12px 0 0 0;
+  text-align: center;
+}
+
+/* ======================================================
+   BOTÃO CONTINUAR
+====================================================== */
+.cadastro-inicial-botao-continuar {
+  margin-top: 20px;
+  align-self: flex-end;
+  background-color: #5fb65c;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 40px;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: 'GoogleSansFlex', -apple-system, sans-serif;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cadastro-inicial-botao-continuar:hover {
+  background-color: #4a9e48;
+}
+
+.cadastro-inicial-botao-continuar:disabled {
+  background-color: #a0c9a0;
+  cursor: not-allowed;
+}
