@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import './TelaPrincipal.css';
-import MostrarLogo, { HeaderPagina } from '../../assets/components.jsx';
+import MostrarLogo from '../../assets/components.jsx';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 
 function TelaPrincipal() {
@@ -33,22 +33,13 @@ function TelaPrincipal() {
   const paginaAtiva = obterPaginaAtiva();
 
   return (
-  <>
-    {location.pathname.includes('/dieta') ? (
-      <div className="logo-flutuante">
-        <MostrarLogo />
-      </div>
-    ) : (
-      <div className="topo">
-        <MostrarLogo />
-        <HeaderPagina titulo={paginaAtiva} />
-      </div>
-    )}
-
     <div className="limitador_tags">
       <div className="corpo-layout">
         <aside className={`barra_lateral ${location.pathname.includes('/dieta') ? 'barra_lateral-com-logo' : ''}`}>
-          <nav>
+          <div className="topo">
+            <MostrarLogo />
+          </div>
+          <nav className="menu-navegacao">
             <ul>
               {menus.map((item) => (
                 <li
@@ -64,13 +55,13 @@ function TelaPrincipal() {
           </nav>
         </aside>
 
-        <div className="area-conteudo">
+        {/* A chave (key) força o elemento a remontar e disparar a animação de troca de tela */}
+        <div className="area-conteudo" key={location.pathname}>
           <Outlet />
         </div>
       </div>
     </div>
-  </>
-);
+  );
 }
 
 export default TelaPrincipal;

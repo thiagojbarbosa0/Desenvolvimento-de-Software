@@ -1,49 +1,255 @@
-#formulario_login h1 {
-  font-family: 'Inika-Regular';
-  font-size: 40px;
-  color: #000000;
-  text-align: center;
+/* ======================================================
+   ESTRUTURA E FUNDO (TOTALMENTE ISOLADO)
+====================================================== */
+.container-cadastro {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  height: auto;
   width: 100%;
+  background-color: #fff;
   box-sizing: border-box;
-  margin: 0;
-  padding: 25px 0 20px 0;
-  border-bottom: 1px solid #ddd;
+  position: relative; 
 }
 
-#formulario_login p {
-font-family: 'Inika-Regular';
-font-size: 25px;
-color: #000000;
+/* Apenas na tela de cadastro o contêiner do topo fica absoluto */
+.container-cadastro .topo-cadastro {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 260px; 
 }
 
-#formulario_login button {
-margin-bottom: 10px;
+/* Modificação exclusiva para a logo quando exibida DENTRO da tela de cadastro */
+.container-cadastro #caixa_logo {
+  position: relative !important; 
+  width: 260px !important;       
+  max-width: 260px !important;
+  height: 80px !important;
+  border-radius: 0 0 16px 0 !important; /* O arredondado só vai acontecer aqui */
+  margin: 0 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+}
+
+.conteudo-cadastro {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; 
+  padding: 24px; 
+  box-sizing: border-box;
+  width: 100%;
 }
 
 /* ======================================================
-   CHECKBOX "ACEITO RECEBER EMAIL"
+   CARD DO FORMULÁRIO (DESIGN CENTRALIZADO PREMIUM)
+====================================================== */
+.card-cadastro {
+  background-color: #fdfcfc;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 460px; /* Largura perfeita para leitura de formulários */
+  padding: 40px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+  animation: surgimentoCard 0.4s ease-out;
+}
+
+.header-card {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.header-card h1 {
+  font-family: 'Cabin', -apple-system, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #07452C;
+  margin: 0 0 6px 0;
+}
+
+.header-card .subtitulo {
+  font-family: 'GoogleSansFlex', sans-serif;
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+/* ======================================================
+   ELEMENTOS DE ENTRADA (LABELS E DICAS)
+====================================================== */
+.grupo-input {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.grupo-input label {
+  font-family: 'GoogleSansFlex', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.grupo-input .dica-senha {
+  font-size: 11px;
+  color: #777;
+  font-weight: normal;
+}
+
+/* ======================================================
+   CHECKBOX CUSTOMIZADO
 ====================================================== */
 .cadastro-checkbox-container {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  margin-left: 25px;
-  margin-top: -10px;
+  width: 100%;
+  margin: 4px 0;
 }
 
 .cadastro-checkbox-container input[type='checkbox'] {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
-  margin-top: 2px;
+  margin-top: 1px;
   cursor: pointer;
-  accent-color: #5fb65c;
+  accent-color: #5FB65C;
 }
 
 .cadastro-checkbox-container label {
-  font-family: 'GoogleSansFlex', -apple-system, sans-serif;
-  font-size: 14px;
-  color: #555;
+  font-family: 'GoogleSansFlex', sans-serif;
+  font-size: 13px;
+  color: #555555;
   line-height: 1.4;
   cursor: pointer;
+  user-select: none;
+}
+
+/* ======================================================
+   MENSAGEM DE ERRO DINÂMICA
+====================================================== */
+.mensagem-erro {
+  font-family: 'GoogleSansFlex', sans-serif;
+  font-size: 13px;
+  color: #D32F2F;
+  background-color: #FEEBEE;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin: 4px 0;
+  width: 100%;
+  box-sizing: border-box;
+  font-weight: 500;
+}
+
+/* ======================================================
+   BOTÕES DE AÇÃO REESTILIZADOS
+====================================================== */
+.acoes-cadastro {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.acoes-cadastro button {
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
+  font-family: 'GoogleSansFlex', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-principal {
+  background-color: #5FB65C;
+  color: #FFFFFF;
+}
+
+.btn-principal:hover:not(:disabled) {
+  background-color: #4ba348;
+  box-shadow: 0 4px 12px rgba(95, 182, 92, 0.2);
+}
+
+.btn-principal:disabled {
+  background-color: #a3dba1;
+  cursor: not-allowed;
+}
+
+.btn-secundario {
+  background-color: transparent;
+  color: #07452C;
+  border: 1px solid #dcdcdc !important;
+}
+
+.btn-secundario:hover {
+  background-color: #f7f7f7;
+}
+
+/* Animação suave para o card */
+@keyframes surgimentoCard {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ======================================================
+   RESPONSIVIDADE (MOBILE)
+====================================================== */
+@media (max-width: 768px) {
+  /* Esconde a logo completamente em telas pequenas */
+  #caixa_logo {
+    display: none !important;
+  }
+
+  .conteudo-cadastro {
+    padding: 16px;
+    align-items: flex-start; /* Evita que o teclado virtual do celular quebre o topo */
+  }
+
+  .card-cadastro {
+    padding: 24px 20px;
+    border-radius: 16px;
+    
+    /* Zera a margem do topo já que a logo sumiu, 
+       fazendo o formulário aproveitar melhor a tela do celular */
+    margin-top: 20px; 
+    margin-bottom: 20px;
+  }
+  
+  .header-card h1 {
+    font-size: 24px;
+  }
+}
+
+/* ======================================================
+   AJUSTE DE TAMANHO DOS PLACEHOLDERS DO CADASTRO
+====================================================== */
+.input_padrao_texto::-webkit-input-placeholder,
+.input_padrao_senha::-webkit-input-placeholder {
+  font-size: 14px;
+  color: #aaa;
+}
+
+.input_padrao_texto::-moz-placeholder,
+.input_padrao_senha::-moz-placeholder {
+  font-size: 14px;
+  color: #aaa;
+}
+
+.input_padrao_texto:-ms-input-placeholder,
+.input_padrao_senha:-ms-input-placeholder {
+  font-size: 14px;
+  color: #aaa;
+}
+
+.input_padrao_texto::placeholder,
+.input_padrao_senha::placeholder {
+  font-size: 14px;
+  color: #aaa;
 }

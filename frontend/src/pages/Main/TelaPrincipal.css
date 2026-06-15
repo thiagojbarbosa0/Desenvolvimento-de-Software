@@ -1,5 +1,5 @@
 /* ======================================================
-   ESTRUTURA PRINCIPAL (O PAI)
+   ESTRUTURA PRINCIPAL
 ====================================================== */
 html, body, #root {
     height: 100%;
@@ -19,55 +19,8 @@ html, body, #root {
     overflow: hidden;
 }
 
-.logo-flutuante {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 100;
-}
-
-.barra_lateral.barra_lateral-com-logo {
-  padding-top: 130px;
-}
-
 /* ======================================================
-   CABEÇALHO
-====================================================== */
-
-.topo {
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
-
-.topo-logo {
-    flex: 1;
-    display: flex;
-}
-
-.caixa_cabecalho {
-    flex: 1;
-    height: 98px;
-
-    border: 1px solid #ccc;
-    border-radius: 0 0 0 20px;
-
-    display: flex;
-    align-items: center;
-
-    padding-left: 20px;
-    box-sizing: border-box;
-}
-
-h1 {
-    margin: 0;
-    font-family: 'Inika-Regular', serif;
-    font-size: 40px;
-    font-weight: normal;
-}
-
-/* ======================================================
-   CORPO (DIVIDE A TELA EM ESQUERDA E DIREITA)
+   CORPO E BARRA LATERAL DINÂMICA (FLUIDA)
 ====================================================== */
 .corpo-layout {
     display: flex;
@@ -76,55 +29,86 @@ h1 {
     overflow: hidden;
 }
 
-/* ======================================================
-   BARRA LATERAL (MENU ESQUERDO)
-====================================================== */
 .barra_lateral {
-    width: 344px;
-    flex-shrink: 0;
+    /* Tamanho variável baseado na largura da tela com travas de segurança */
+    width: 22vw; 
+    min-width: 260px;
+    max-width: 290px;
+    
     height: 100%;
-    background-color: white;
-    border-right: 1px solid #ddd;
-    padding-top: 20px;
+    background-color: #ffffff;
+    border-right: 1px solid #eaeaea;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.topo {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.menu-navegacao {
+    flex: 1;
 }
 
 .barra_lateral ul {
     list-style: none;
     padding: 0;
     margin: 0;
-}
-
-.barra_lateral li {
     display: flex;
-    align-items: center;
-    padding: 15px 25px;
-    cursor: pointer;
-    transition: 0.2s;
-    color: #444;
-    font-size: 24px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.barra_lateral .icone {
-    margin-right: 15px;
-    font-size: 28px;
-}
-
-.barra_lateral li:hover {
-    background-color: #f5f5f5;
-}
-
-.barra_lateral li.ativo {
-    background-color: #D1E7D1;
-    color: #3E5F3E;
-    border-radius: 0 10px 10px 0;
-    margin-right: 10px;
-    font-weight: 500;
+    flex-direction: column;
+    gap: 6px; /* Espaçamento moderno entre botões */
 }
 
 /* ======================================================
-   ÁREA DE CONTEÚDO (LADO DIREITO - GENÉRICO PARA O OUTLET)
+   BOTÕES DO MENU (FONTES E DESIGN ATUALIZADOS)
+====================================================== */
+.barra_lateral li {
+    display: flex;
+    align-items: center;
+    padding: 14px 24px;
+    cursor: pointer;
+    color: #555555;
+    
+    /* Fontes reescaladas de 24px para um padrão mais limpo e elegante */
+    font-size: 16px; 
+    font-weight: 500;
+    font-family: 'GoogleSansFlex', -apple-system, sans-serif;
+    
+    margin: 0 12px;
+    border-radius: 12px;
+    transition: all 0.25s ease;
+}
+
+.barra_lateral .icone {
+    margin-right: 14px;
+    font-size: 22px; /* Ícones proporcionais à nova fonte */
+    transition: transform 0.25s ease;
+}
+
+/* Efeito de Hover Moderno */
+.barra_lateral li:hover {
+    background-color: #f4f9f4;
+    color: #2c4232;
+}
+
+.barra_lateral li:hover .icone {
+    transform: translateX(3px); /* Leve feedback visual no ícone */
+}
+
+/* Estado Ativo Modificado (Estilo Pílula Fluida) */
+.barra_lateral li.ativo {
+    background-color: #D1E7D1;
+    color: #07452C;
+    font-weight: 600;
+}
+
+/* ======================================================
+   ÁREA DE CONTEÚDO COM ANIMAÇÃO DE TROCA DE TELA
 ====================================================== */
 .area-conteudo {
     flex: 1;
@@ -132,174 +116,96 @@ h1 {
     flex-direction: column;
     min-height: 0;
     overflow-y: auto;
+    background-color: #F5F5F5;
+    
+    /* Aplicação da animação na troca de tela */
+    animation: transicaoTela 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-/* ======================================================
-   ÁREA DO CHAT (LADO DIREITO)
-====================================================== */
-.area-do-chat {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background-color: #fafafa;
-}
-
-.historico-mensagens {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-}
-
-/* ======================================================
-   INPUT DE MENSAGEM (RODAPÉ DO CHAT)
-====================================================== */
-.caixa-de-mensagem {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 25px;
-    padding: 10px 15px;
-    background-color: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    margin: 20px;
-}
-
-.campo-digitacao {
-    flex: 1;
-    border: none;
-    outline: none;
-    resize: none;
-    font-size: 16px;
-    font-family: inherit;
-    color: #555;
-    background: transparent;
-    padding-top: 4px;
-}
-
-.botao-anexo {
-    background: none;
-    border: none;
-    font-size: 24px;
-    color: #888;
-    cursor: pointer;
-    margin-left: 10px;
-}
-
-.botao-anexo:hover {
-    color: #333;
-}
-
-/* ======================================================
-   BALÕES DE MENSAGEM (CHAT)
-====================================================== */
-.mensagem-bot {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 20px;
-    gap: 15px;
-    padding-top: 10px;
-}
-
-.avatar-bot {
-    width: 50px;
-    height: 50px;
-    background-color: #D1E7D1;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 28px;
-    flex-shrink: 0;
-}
-
-/* A caixa branca com o texto */
-.balao-mensagem {
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 15px 20px;
-    border-radius: 8px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 18px;
-    color: #333;
-    position: relative;
-    max-width: 80%;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-
-.balao-mensagem::before {
-    content: '';
-    position: absolute;
-    top: 15px;
-    left: -11px;
-    border-style: solid;
-    border-width: 10px 11px 10px 0;
-    border-color: transparent #ccc transparent transparent;
-}
-
-/* ======================================================
-   BALÃO DO BOT (ESQUERDA - BRANCO)
-====================================================== */
-.balao-bot {
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 15px 20px;
-    border-radius: 8px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 18px;
-    color: #333;
-    position: relative;
-    max-width: 80%;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-
-.balao-bot::before {
-    content: '';
-    position: absolute;
-    top: 15px;
-    left: -11px;
-    border-style: solid;
-    border-width: 10px 11px 10px 0;
-    border-color: transparent #ccc transparent transparent;
-}
-
-.balao-bot::after {
-    content: '';
-    position: absolute;
-    top: 15px;
-    left: -9px;
-    border-style: solid;
-    border-width: 10px 10px 10px 0;
-    border-color: transparent white transparent transparent;
-}
-
-/* ======================================================
-   BALÃO DO USUÁRIO (DIREITA - VERDE)
-====================================================== */
-.mensagem-usuario {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 20px;
-}
-
-.balao-usuario {
-    background-color: #D1E7D1;
-    padding: 15px 20px;
-    border-radius: 12px 12px 0px 12px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 18px;
-    color: #333;
-    max-width: 80%;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-
-/*estilizando os ícones da dieta*/
+/* Configuração dos ícones globais do menu */
 .material-symbols-outlined {
-  font-family: 'Material Symbols Outlined';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 28px;
-  line-height: 1;
+  font-size: 24px;
   display: inline-block;
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-  -webkit-text-fill-color: #0C3E17;
+  line-height: 1;
+  -webkit-text-fill-color: #07452C;
+}
+
+/* ======================================================
+   KEYFRAMES (A ANIMAÇÃO)
+====================================================== */
+@keyframes transicaoTela {
+    from {
+        opacity: 0;
+        transform: translateY(8px); /* Efeito sutil de subida suave */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ======================================================
+   RESPONSIVIDADE (MOBILE)
+====================================================== */
+@media (max-width: 768px) {
+    .corpo-layout {
+        flex-direction: column;
+    }
+
+    .barra_lateral {
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+        height: 68px;
+        order: 2;
+        border-right: none;
+        border-top: 1px solid #eee;
+        padding-top: 0;
+        overflow-y: hidden;
+        flex-direction: row;
+    }
+
+    .barra_lateral .topo {
+        display: none;
+    }
+
+    .barra_lateral ul {
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        height: 100%;
+        gap: 0;
+    }
+
+    .barra_lateral li {
+        flex-direction: column;
+        justify-content: center;
+        padding: 6px 0;
+        font-size: 11px;
+        margin: 0;
+        border-radius: 0;
+        flex: 1;
+        height: 100%;
+    }
+
+    .barra_lateral .icone {
+        margin-right: 0;
+        margin-bottom: 3px;
+        font-size: 20px;
+    }
+
+    .barra_lateral li:hover .icone {
+        transform: none;
+    }
+
+    .barra_lateral li.ativo {
+        background-color: transparent;
+        border-bottom: 3px solid #5FB65C;
+        color: #5FB65C;
+    }
+
+    .area-conteudo {
+        order: 1;
+        height: calc(100vh - 68px);
+    }
 }

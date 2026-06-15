@@ -1,65 +1,60 @@
-import LogoIcon from './icons/Logo.svg'
-import { useState,useRef,useEffect } from 'react';
-function MostrarLogo() {
-    return(
-    <>
-      <div id='caixa_logo'>
-      <img src={LogoIcon} width={84} height={84} alt="Logo" />
-        <h1 id='logo_texto'>NutriAI</h1>
-      </div>
-    </>
-    )
+import LogoIcon from './icons/Logo.svg';
+import LogoTipoIcon from './icons/Logotipo.svg';
+import { useState, useRef, useEffect } from 'react';
+import './components.css'; // Importação das melhorias de estilo isoladas
+
+export function MostrarLogo() {
+  return (
+    <div id='caixa_logo'>
+      {/* <img src={LogoIcon} width={42} height={42} alt="Logo" />
+      <h1 id='logo_texto'>NutriAI</h1> */}
+      <img src={LogoTipoIcon} width="100%" alt="Logotipo" />
+    </div>
+  );
 }
+
 /******************************************************************************************************************************/
 export function MostrarLogoEstendido() {
-    return(
+  return (
     <div id='logo_estendido'>
       <div id='caixa_logo_estendido'>
         <h1 id='logo_texto_estendido'>NutriAI</h1>
       </div>
     </div>
-    )
-}
-/******************************************************************************************************************************/
-export function InputPadraoTexto() {
-    return(
-      <input
-        type='text'
-        className='input_padrao_texto'
-      />
-    )
-}
-
-export function InputPadraoSenha() {
-    return(
-      <input
-        type='text'
-        className='input_padrao_senha'
-      />
-    )
-}
-
-export function FormularioPadrao() {
-    return(
-      <form className='formulario_padrao'>
-      </form>
-    )
-}
-
-export function HeaderPagina({ titulo }) {
-  if (titulo == "Comunidade") {
-        var titulo = "Comunidade - Leia e Compartilhe Experiencias";
-        }
-  return (
-    <header className="topo-logo">
-      <div className="caixa_cabecalho">
-        <h1>{titulo} - Sistema NutriAI</h1>
-      </div>
-    </header>
   );
 }
 
-/* Casco do quadro de ajuda (aquele da tela de ajuda quando o usuário está recuperando a senha)*/
+/******************************************************************************************************************************/
+// Adicionado ...props para permitir passar placeholders, onChange, value, etc., dinamicamente do pai
+export function InputPadraoTexto({ ...props }) {
+  return (
+    <input
+      type='text'
+      className='input_padrao_texto'
+      {...props}
+    />
+  );
+}
+
+export function InputPadraoSenha({ ...props }) {
+  return (
+    <input
+      type='password' /* Corrigido de text para password por segurança */
+      className='input_padrao_senha'
+      {...props}
+    />
+  );
+}
+
+export function FormularioPadrao({ children, ...props }) {
+  return (
+    <form className='formulario_padrao' {...props}>
+      {children}
+    </form>
+  );
+}
+
+/* Casco do quadro de ajuda modernizado com animações suaves de entrada */
 export function CardAjudaShell({ titulo = 'Ajuda', children }) {
   return (
     <div className="card-ajuda-overlay">
@@ -76,15 +71,7 @@ export function CardAjudaShell({ titulo = 'Ajuda', children }) {
 }
 
 /**
- * Componente reutilizável de seleção múltipla com busca e tags.
- *
- * Props:
- * - opcoes: string[] — lista de opções disponíveis
- * - valor: string[] — itens atualmente selecionados (controlado pelo pai)
- * - onChange: (novoValor: string[]) => void — chamado quando a seleção muda
- * - placeholder: string — texto exibido quando vazio (default: "Digitar...")
- * - permitirCriarNovo: boolean — se true, permite adicionar opções
- *   que não estão na lista (digita e aperta Enter)
+ * Componente reutilizável de seleção múltipla modernizado
  */
 export function SeletorMultiplo({
   opcoes = [],
@@ -121,7 +108,6 @@ export function SeletorMultiplo({
     }
   };
 
-  // Fecha o dropdown ao clicar fora
   useEffect(() => {
     const handleClickFora = (e) => {
       if (containerRef.current && !containerRef.current.contains(e.target)) {
@@ -133,7 +119,8 @@ export function SeletorMultiplo({
   }, []);
 
   return (
-    <div className="seletor-multiplo-container" ref={containerRef}>
+    /* Adicionada a classe condicional 'focado' para aplicar bordas e sombras elegantes com CSS */
+    <div className={`seletor-multiplo-container ${aberto ? 'focado' : ''}`} ref={containerRef}>
       <div className="seletor-multiplo-campo" onClick={() => setAberto(true)}>
         <div className="seletor-multiplo-tags">
           {valor.map((item) => (
@@ -161,7 +148,7 @@ export function SeletorMultiplo({
             onKeyDown={handleKeyDown}
           />
         </div>
-        <span className={`seletor-multiplo-seta ${aberto ? 'aberta' : ''}`}>⌄</span>
+        <span className={`seletor-multiplo-seta ${aberto ? 'aberta' : ''}`}>▾</span>
       </div>
 
       {aberto && opcoesFiltradas.length > 0 && (
