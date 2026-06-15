@@ -1,5 +1,38 @@
+/*declaração de fontes externas*/
+@font-face {
+  font-family: 'Informal Roman';
+  src: url('src/assets/fonts/INFROMAN.TTF') 
+  format('truetype');
+}
+
+@font-face {
+  font-family: 'Cabin';
+  src: url('src/assets/fonts/Cabin.ttf')
+  format('truetype');
+}
+
+@font-face {
+  font-family: 'GoogleSansFlex';
+  src: url('src/assets/fonts/GoogleSansFlex.ttf')
+  format('truetype');
+
+}
+
+@font-face {
+  font-family: 'Comme';
+  src: url('src/assets/fonts/Comme.ttf')
+  format('truetype');
+}
+
+@font-face {
+  font-family: 'Inika-Regular';
+  src: url('src/assets/fonts/Inika-Regular.ttf')
+  format('truetype');
+  }
+
+/******************************************************************************************************************************/
 /*tirando margem chata de todas as telas e colocando o fundo na cor branca*/
-body{
+body {
   height: 100vh;
   width: 100vw;
   background-color: #F5F5F5;
@@ -9,10 +42,6 @@ body{
 /******************************************************************************************************************************/
 
 /*estilizando a caixa verde e o texto do logo*/
-#logo{
-  display: flex;
-}
-
 #caixa_logo {
   display: flex;
   justify-content: center;
@@ -23,13 +52,14 @@ body{
   background-color:#5FB65C;
   border-radius: 0px 0px 20px 0px;
   border: 1px solid black;
-  
+  box-shadow:  0 6px 25px rgba(0, 0, 0, 0.2),
+  inset 0 3px 6px rgba(0, 0, 0, 0.30);
 }
 
 #logo_texto {
-  font-family: 'Informal Roman';
-  font-size: 90px;
-  color: white;
+  font-family: 'Cabin';
+  font-size: 64px;
+  color: #07452C;
   text-shadow:
     -1px -1px 0 #000,
      1px -1px 0 #000,
@@ -67,13 +97,137 @@ body{
      1px -1px 0 #000,
     -1px  1px 0 #000,
      1px  1px 0 #000;
-
 }
+
 /******************************************************************************************************************************/
-/*estilizando a entrada(input)padrão*/
+/*estilizando a entrada(input)padrão###  verificar se está sendo utilizada em algum lugar, se não, deletar*/
 .input_padrao {
     border-radius: 20px 20px 20px 20px;
     width: 447px;
     height: 62px;
     box-shadow: inset;
+}
+
+/******************************************************************************************************************************/
+/* ======================================================
+   SELECT MÚLTIPLO REUTILIZÁVEL
+====================================================== */
+.seletor-multiplo-container {
+  width: 100%;
+  position: relative;
+}
+
+.seletor-multiplo-campo {
+  width: 100%;
+  min-height: 56px;
+  border: 1px solid #ccc;
+  border-radius: 18px;
+  background-color: #fafbfa;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 18px;
+  box-sizing: border-box;
+  cursor: text;
+}
+
+.seletor-multiplo-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.seletor-multiplo-tag {
+  background-color: #d1e7d1;
+  color: #2c4232;
+  border-radius: 20px;
+  padding: 6px 8px 6px 14px;
+  font-size: 15px;
+  font-family: 'GoogleSansFlex', -apple-system, sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.seletor-multiplo-tag-remover {
+  background: none;
+  border: none;
+  color: #2c4232;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+  border-radius: 50%;
+  transition: background-color 0.15s ease;
+}
+
+.seletor-multiplo-tag-remover:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.seletor-multiplo-input {
+  flex: 1;
+  min-width: 100px;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 20px;
+  font-family: 'GoogleSansFlex', -apple-system, sans-serif;
+  color: #333;
+  padding: 6px 0;
+}
+
+.seletor-multiplo-input::placeholder {
+  color: #b3b3b3;
+  font-family: 'GoogleSansFlex', -apple-system, sans-serif;
+  font-size: 20px;
+}
+
+.seletor-multiplo-seta {
+  font-size: 22px;
+  color: #788d7d;
+  transition: transform 0.2s ease;
+  margin-left: 10px;
+  flex-shrink: 0;
+}
+
+.seletor-multiplo-seta.aberta {
+  transform: rotate(180deg);
+}
+
+/* ======================================================
+   DROPDOWN DE OPÇÕES
+====================================================== */
+.seletor-multiplo-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  max-height: 260px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.seletor-multiplo-opcao {
+  padding: 12px 16px;
+  font-size: 17px;
+  color: #333;
+  font-family: 'GoogleSansFlex', -apple-system, sans-serif;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.seletor-multiplo-opcao:hover {
+  background-color: #f0f5ef;
 }

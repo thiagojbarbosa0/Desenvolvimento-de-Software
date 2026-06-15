@@ -1,0 +1,152 @@
+.metas-container {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100%;
+  gap: 20px;
+  padding: 20px;
+}
+
+.metas-container h1 {
+  font-family: 'Inika-Regular', serif;
+  font-size: 20px;
+  font-weight: normal;
+  color: #333;
+  margin: 20px 0 5px 0;
+  text-align: center;
+  width: 100%;
+}
+
+/* Deixa a primeira pergunta sem margem exagerada no topo */
+.metas-container h1:first-of-type {
+  margin-top: 0;
+}
+
+/* Subtítulo explicativo do campo opcional de DCNT */
+.metas-subtitulo-opcional {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #666;
+  -webkit-text-fill-color: #666;
+  margin: -10px 0 5px 0;
+  text-align: center;
+}
+
+/* Link explicativo "O que são DCNT's?" (Verde) */
+.metas-link-explicacao {
+  font-family: 'Inika', sans-serif;
+  font-size: 15px;
+  color: #4a9e48;
+  -webkit-text-fill-color: #4a9e48;
+  margin-top: 5px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-align: center;
+  transition: opacity 0.2s ease;
+}
+
+.metas-link-explicacao:hover {
+  opacity: 0.8;
+}
+
+/* Mensagem de Erro (Vermelho corrigido) */
+.metas-erro {
+  color: #c0392b;
+  -webkit-text-fill-color: #c0392b;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 15px 0 0 0;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Botão Continuar */
+.metas-botao-continuar {
+  margin-top: 30px;
+  align-self: flex-end;
+  background-color: #5fb65c;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 40px;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: 'GoogleSansFlex', -apple-system, sans-serif;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.metas-botao-continuar:hover {
+  background-color: #4a9e48;
+}
+
+.metas-botao-continuar:disabled {
+  background-color: #a0c9a0;
+  cursor: not-allowed;
+}
+
+/* Fundo escurecido que cobre a tela toda */
+.metas-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Cortina preta transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Garante que fica por cima de tudo */
+}
+
+/* Caixa branca do Pop-up */
+.metas-modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 16px;
+  max-width: 450px;
+  width: 90%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.metas-modal-content h2 {
+  font-family: 'Inika-Regular', serif;
+  font-size: 22px;
+  color: #333;
+  margin: 0 0 10px 0;
+}
+
+.metas-modal-content p {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #555;
+  margin: 0;
+}
+
+/* Botão de fechar do modal */
+.metas-modal-fechar {
+  margin-top: 15px;
+  background-color: #4a9e48;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-end;
+  transition: background-color 0.2s ease;
+}
+
+.metas-modal-fechar:hover {
+  background-color: #387a36;
+}
