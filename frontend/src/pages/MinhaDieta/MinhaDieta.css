@@ -6,13 +6,18 @@
 
 /* Grid Hoje */
 .dieta-grid-refeicoes { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 35px; max-width: 1200px; margin: 0 auto; }
-.dieta-card-misto { position: relative; border-radius: 28px; overflow: hidden; }
-.dieta-card-bg { width: 100%; }
+.dieta-card-misto { position: relative; border-radius: 28px; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.dieta-card-bg { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(0.95); transition: transform 0.3s ease; }
+/* Faz o card flutuar e aumenta a sombra */
+.dieta-card-misto:hover { transform: translateY(-5px); box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15); }
+/* Quando o card sofrer hover, a imagem filha volta ao tamanho máximo (100%) sem vazar nada */
+.dieta-card-misto:hover .dieta-card-bg { transform: scale(1); }
 
 /* Refeições - Estilo Protótipo */
 .dieta-lista-refeicoes { display: flex; flex-direction: column; gap: 24px; max-width: 950px; margin: 0 auto; }
 .card-refeicao-detalhado { display: flex; background: #f7f9f7; border: 1px solid #e3e8e4; border-radius: 24px; padding: 20px; gap: 24px; }
-.card-refeicao-detalhado img { width: 320px; height: 220px; object-fit: cover; border-radius: 20px; }
+.card-refeicao-detalhado img { width: 320px; height: 165px; object-fit: cover; object-position: 50% 15%; border-radius: 20px; transition: transform 0.3s ease; }
+.card-refeicao-detalhado:hover img { transform: scale(1.05); }
 .conteudo-card h3 { color: #2c4232; margin: 0 0 12px 0; }
 .tags-nutri { display: flex; gap: 8px; margin-bottom: 16px; }
 .tags-nutri span { background: #dcfce7; color: #166534; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; }
