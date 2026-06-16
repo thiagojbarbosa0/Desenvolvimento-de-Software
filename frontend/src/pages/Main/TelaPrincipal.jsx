@@ -22,6 +22,19 @@ function TelaPrincipal() {
     { nome: "Consultor IA", icone: "comment", rota: "/tela-principal" },
   ];
 
+  const handleLogout = () => {
+    // 1. Limpa o histórico específico do usuário antes de deslogar
+    const userId = localStorage.getItem('user_id');
+    if (userId) {
+      localStorage.removeItem(`chat_historico_${userId}`);
+    }
+    
+    // 2. Remove tokens e redireciona
+    localStorage.removeItem('token');
+    localStorage.removeItem('user_id');
+    navigate('/tela-login');
+  };
+
   const obterPaginaAtiva = () => {
     if (location.pathname.includes('dashboard')) return "Dashboard";
     if (location.pathname.includes('perfil')) return "Meu perfil";
@@ -33,44 +46,51 @@ function TelaPrincipal() {
   const paginaAtiva = obterPaginaAtiva();
 
   return (
-  <>
-    {location.pathname.includes('/dieta') ? (
-      <div className="logo-flutuante">
-        <MostrarLogo />
-      </div>
-    ) : (
-      <div className="topo">
-        <MostrarLogo />
-        <HeaderPagina titulo={paginaAtiva} />
-      </div>
-    )}
+    <>
+      {location.pathname.includes('/dieta') ? (
+        <div className="logo-flutuante">
+          <MostrarLogo />
+        </div>
+      ) : (
+        <div className="topo">
+          <MostrarLogo />
+          <HeaderPagina titulo={paginaAtiva} />
+        </div>
+      )}
 
-    <div className="limitador_tags">
-      <div className="corpo-layout">
-        <aside className={`barra_lateral ${location.pathname.includes('/dieta') ? 'barra_lateral-com-logo' : ''}`}>
-          <nav>
-            <ul>
-              {menus.map((item) => (
-                <li
-                  key={item.nome}
-                  className={item.nome === paginaAtiva ? 'ativo' : ''}
-                  onClick={() => navigate(item.rota)}
-                >
-                  <span className="icone material-symbols-outlined">{item.icone}</span>
-                  <span className="texto">{item.nome}</span>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </aside>
+      <div className="limitador_tags">
+        <div className="corpo-layout">
+          <aside className={`barra_lateral ${location.pathname.includes('/dieta') ? 'barra_lateral-com-logo' : ''}`}>
+            <nav className="nav-menu">
+              <ul>
+                {menus.map((item) => (
+                  <li
+                    key={item.nome}
+                    className={item.nome === paginaAtiva ? 'ativo' : ''}
+                    onClick={() => navigate(item.rota)}
+                  >
+                    <span className="icone material-symbols-outlined">{item.icone}</span>
+                    <span className="texto">{item.nome}</span>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            
+            <div className="container-sair">
+              <button onClick={handleLogout} className="botao-sair">
+                <span className="icone material-symbols-outlined">logout</span>
+                <span className="texto">Sair</span>
+              </button>
+            </div>
+          </aside>
 
-        <div className="area-conteudo">
-          <Outlet />
+          <div className="area-conteudo">
+            <Outlet />
+          </div>
         </div>
       </div>
-    </div>
-  </>
-);
+    </>
+  );
 }
 
 export default TelaPrincipal;

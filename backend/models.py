@@ -61,3 +61,19 @@ class Checkin(Base):
     done = Column(Boolean, default=True)
     notes = Column(Text)
     created_at = Column(String, default=lambda: datetime.datetime.now().isoformat())
+
+# ... (seus imports atuais) ...
+from sqlalchemy import UniqueConstraint
+
+# ... (seus outros modelos: User, Profile, Post, Checkin) ...
+
+class PostLike(Base):
+    __tablename__ = "post_likes"
+    
+    id = Column(String, primary_key=True, default=generate_uuid)
+    post_id = Column(String, ForeignKey("posts.id", ondelete="CASCADE"), nullable=False)
+    user_id = Column(String, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    created_at = Column(String, default=lambda: datetime.datetime.now().isoformat())
+
+    # Esta linha garante que um usuário só pode ter 1 linha para o mesmo post
+    __table_args__ = (UniqueConstraint('post_id', 'user_id', name='_user_post_like_uc'),)

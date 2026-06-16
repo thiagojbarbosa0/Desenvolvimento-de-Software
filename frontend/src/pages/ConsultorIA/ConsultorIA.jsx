@@ -1,11 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { api } from '../../services/api.js';
 
 function ConsultorIA() {
   const [mensagemAtual, setMensagemAtual] = useState(""); 
-  const [historico, setHistorico] = useState([
-    { autor: "bot", texto: "Olá, sou o seu consultor IA. Como posso ajudá-lo?" }
-  ]);
+  
+  // Define uma chave única para este usuário
+  const userId = localStorage.getItem("user_id");
+  const CHAVE_STORAGE = userId ? `chat_historico_${userId}` : "chat_historico_visitante";
+
+  // Inicializa o estado buscando no localStorage
+  const [historico, setHistorico] = useState(() => {
+    const salvo = localStorage.getItem(CHAVE_STORAGE);
+    return salvo ? JSON.parse(salvo) : [
+      { autor: "bot", texto: "Olá, sou o seu consultor IA. Como posso ajudá-lo?" }
+    ];
+  });
+
+  // Salva no localStorage sempre que o histórico mudar
+  useEffect(() => {
+    localStorage.setItem(CHAVE_STORAGE, JSON.stringify(historico));
+  }, [historico, CHAVE_STORAGE]);
 
   const enviarMensagem = async () => {
     const textoParaEnviar = mensagemAtual.trim();
@@ -20,7 +34,7 @@ function ConsultorIA() {
     try {
       const { data } = await api.post("/chat", {
         mensagem: textoParaEnviar,
-        user_id: localStorage.getItem("user_id"),
+        user_id: userId,
       });
       
       setHistorico(prev => [
