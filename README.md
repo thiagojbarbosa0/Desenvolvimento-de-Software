@@ -54,7 +54,7 @@ Depois edite o .env e coloque sua chave após o texto "GEMINI_API_KEY=".
 ### 3. Criar ambiente virtual Python e instalar dependências do backend
 
 ```bash
-python -m venv venv
+python3 -m venv venv
 
 source venv/bin/activate #Activate.ps1 no Windows
 
