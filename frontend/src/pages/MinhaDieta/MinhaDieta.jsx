@@ -13,6 +13,77 @@ function MinhaDieta() {
     { id: 5, tipo: 'Ceia', imagemEstatica: 'Ceia estático.png', titulo: 'Chá de hortelã', descricao: ['200 ml de água', '2 folhas de hortelã'], calorias: '12 kcal' }
   ]);
 
+  // 🌟 States para controlar a resposta, o loading e o modal
+  const [receitaCompleta, setReceitaCompleta] = useState('');
+  const [carregandoReceita, setCarregandoReceita] = useState(false);
+  const [modalAberto, setModalAberto] = useState(false);
+  const [tituloModal, setTituloModal] = useState('');
+
+  // 🌟 States para o agendamento da refeição (controlados por card)
+  const [agendamentos, setAgendamentos] = useState({});
+
+  // 🌟 Função para atualizar as escolhas de dia/tipo de cada card
+  const handleMudarAgendamento = (id, campo, valor) => {
+    setAgendamentos(prev => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        [campo]: valor
+      }
+    }));
+  };
+
+  // 🌟 Nova função para tratar a batata quente do agendamento
+  const handleAdicionarASemana = async (item) => {
+    const escolha = agendamentos[item.id];
+    const dia = escolha?.dia || 'Segunda';
+    const tipo = escolha?.tipo || item.tipo;
+
+    alert(`Batata quente pro Back-end:\nAdicionar "${item.titulo}" na tabela da semana!\nDia: ${dia}\nRefeição: ${tipo.toUpperCase()}`);
+    
+    // Futuramente aqui você fará o fetch enviando isso pro banco salvar:
+    /*
+    await fetch('http://localhost:3000/api/agenda-semana', {
+       method: 'POST',
+       body: JSON.stringify({ userId: 1, receitaId: item.id, dia, tipo })
+    });
+    */
+  };
+
+  // A função que passa a bola para o Back-end (Gemini)
+  const handleBuscarReceita = async (idRefeicao, tituloPrato) => {
+    setCarregandoReceita(true);
+    setReceitaCompleta(''); 
+    setTituloModal(tituloPrato);
+
+    try {
+      const response = await fetch('http://localhost:3000/api/receita-inteligente', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: 1, 
+          refeicaoId: idRefeicao,
+          titulo: tituloPrato
+        })
+      });
+
+      const dados = await response.json();
+
+      if (dados.sucesso) {
+        setReceitaCompleta(dados.receita); 
+        setModalAberto(true); 
+      } else {
+        alert('Erro do servidor: ' + dados.erro);
+      }
+
+    } catch (error) {
+      console.error("Erro ao conectar com o back-end:", error);
+      alert("Não foi possível conectar ao servidor.");
+    } finally {
+      setCarregandoReceita(false); 
+    }
+  };
+
   return (
     <div className="dieta-container">
       <div className="dieta-abas-container">
@@ -43,21 +114,63 @@ function MinhaDieta() {
         </div>
       )}
 
-      {/* TELA REFEIÇÕES (Nova estrutura detalhada) */}
+      {/* TELA REFEIÇÕES (Nova estrutura detalhada com Agendamento) */}
       {abaAtiva === 'Refeições' && (
         <div className="dieta-lista-refeicoes">
-          {refeicoes.map((item) => (
-            <div key={item.id} className="card-refeicao-detalhado">
-              <img src={`/Images/${item.imagemEstatica}`} alt={item.titulo} />
-              <div className="conteudo-card">
-                <h3>{item.titulo}</h3>
-                <div className="tags-nutri"><span>{item.calorias}</span></div>
-                <h4>Ingredientes</h4>
-                <p>{item.descricao.join(', ')}</p>
-                <button className="btn-busca">BUSCAR RECEITA COMPLETA</button>
+          {refeicoes.map((item) => {
+            const escolhasAtuais = agendamentos[item.id] || { dia: 'Segunda', tipo: item.tipo };
+            return (
+              <div key={item.id} className="card-refeicao-detalhado">
+                <img src={`/Images/${item.imagemEstatica}`} alt={item.titulo} />
+                <div className="conteudo-card" style={{ flex: 1 }}>
+                  <h3>{item.titulo}</h3>
+                  <div className="tags-nutri"><span>{item.calorias}</span></div>
+                  <h4>Ingredientes</h4>
+                  <p>{item.descricao.join(', ')}</p>
+                  
+                  {/* 🌟 NOVO bloco de seletores para o agendamento */}
+                  <div className="dieta-agendador-container" style={{ display: 'flex', gap: '10px', marginTop: '16px', alignItems: 'center' }}>
+                    <select 
+                      value={escolhasAtuais.dia} 
+                      onChange={(e) => handleMudarAgendamento(item.id, 'dia', e.target.value)}
+                      style={{ padding: '8px', borderRadius: '8px', border: '1px solid #e3e8e4', background: '#fff', fontSize: '13px', color: '#4a554e' }}
+                    >
+                      {['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'].map(d => <option key={d} value={d}>{d}</option>)}
+                    </select>
+
+                    <select 
+                      value={escolhasAtuais.tipo} 
+                      onChange={(e) => handleMudarAgendamento(item.id, 'tipo', e.target.value)}
+                      style={{ padding: '8px', borderRadius: '8px', border: '1px solid #e3e8e4', background: '#fff', fontSize: '13px', color: '#4a554e' }}
+                    >
+                      <option value="Cafe">Café</option>
+                      <option value="Almoco">Almoço</option>
+                      <option value="Lanche">Lanche</option>
+                      <option value="Jantar">Jantar</option>
+                      <option value="Ceia">Ceia</option>
+                    </select>
+
+                    <button 
+                      className="btn-adicionar-semana"
+                      onClick={() => handleAdicionarASemana(item)}
+                      style={{ background: '#2c4232', color: 'white', border: 'none', padding: '9px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', fontWeight: '600' }}
+                    >
+                      + ADICIONAR À SEMANA
+                    </button>
+                  </div>
+
+                  <button 
+                    className="btn-busca" 
+                    disabled={carregandoReceita}
+                    onClick={() => handleBuscarReceita(item.id, item.titulo)}
+                    style={{ width: '100%' }}
+                  >
+                    {carregandoReceita && tituloModal === item.titulo ? 'Consultando NutriAI...' : 'BUSCAR RECEITA COMPLETA'}
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
       
@@ -79,6 +192,22 @@ function MinhaDieta() {
               })}
             </div>
           ))}
+        </div>
+      )}
+
+      {/* MODAL DA RECEITA */}
+      {modalAberto && (
+        <div className="modal-receita-overlay" onClick={() => setModalAberto(false)}>
+          <div className="modal-receita-conteudo" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-receita-header">
+              <h2>{tituloModal}</h2>
+              <button className="modal-receita-fechar" onClick={() => setModalAberto(false)}>&times;</button>
+            </div>
+            <div className="modal-receita-corpo">
+              <h4>Modo de Preparo Inteligente (NutriAI)</h4>
+              <p>{receitaCompleta}</p>
+            </div>
+          </div>
         </div>
       )}
     </div>

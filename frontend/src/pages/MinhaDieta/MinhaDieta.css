@@ -34,3 +34,16 @@
 .borda-almoco { border-left-color: #ff5e5e !important; }
 .borda-jantar { border-left-color: #2ab7ca !important; }
 .borda-lanche { border-left-color: #ff9f1c !important; }
+
+/* Estilos do Modal da Receita */
+.modal-receita-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(4px); }
+.modal-receita-conteudo { background: #ffffff; width: 90%; max-width: 600px; max-height: 80vh; border-radius: 24px; padding: 30px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); display: flex; flex-direction: column; animation: modalEntrada 0.3s ease-out; }
+.modal-receita-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e3e8e4; padding-bottom: 15px; margin-bottom: 20px; }
+.modal-receita-header h2 { font-size: 20px; color: #2c4232; margin: 0; font-weight: 700; }
+.modal-receita-fechar { background: none; border: none; font-size: 32px; color: #8a9a8e; cursor: pointer; line-height: 1; transition: color 0.2s; }
+.modal-receita-fechar:hover { color: #2c4232; }
+.modal-receita-corpo { overflow-y: auto; padding-right: 8px; }
+.modal-receita-corpo h4 { color: #4eb667; margin: 0 0 10px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+.modal-receita-corpo p { font-size: 14px; color: #4a554e; line-height: 1.6; white-space: pre-line; margin: 0; }
+/* Animaçãozinha suave para abrir o modal de baixo pra cima */
+@keyframes modalEntrada { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
