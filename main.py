@@ -15,10 +15,10 @@ from backend.schemas import (
     ProfileCreate, PlanResponse,
     ChatRequest, ChatResponse,
 )
-from backend.database import engine, get_db
+from backend.database import engine, get_db, hash_password, verify_password
 from backend.ai import generate_plan
 from backend.chat import responder_mensagem
-from backend.db import hash_password, verify_password
+# from backend.db import hash_password, verify_password
 
 import uuid
 
