@@ -22,6 +22,19 @@ function TelaPrincipal() {
     { nome: "Consultor IA", icone: "comment", rota: "/tela-principal" },
   ];
 
+  const handleLogout = () => {
+    // 1. Limpa o histórico específico do usuário antes de deslogar
+    const userId = localStorage.getItem('user_id');
+    if (userId) {
+      localStorage.removeItem(`chat_historico_${userId}`);
+    }
+    
+    // 2. Remove tokens e redireciona
+    localStorage.removeItem('token');
+    localStorage.removeItem('user_id');
+    navigate('/tela-login');
+  };
+
   const obterPaginaAtiva = () => {
     if (location.pathname.includes('dashboard')) return "Dashboard";
     if (location.pathname.includes('perfil')) return "Meu perfil";

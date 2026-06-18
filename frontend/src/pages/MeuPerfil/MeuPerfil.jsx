@@ -1,17 +1,60 @@
 import './MeuPerfil.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { api } from '../../services/api'; // Certifique-se de que o caminho do seu api.js está correto aqui
 
 function MeuPerfil() {
   const [dados, setDados] = useState({
-    nome: 'Fulano',
-    idade: 30,
+    nome: 'Carregando...',
+    idade: 25,
     peso: 70,
     altura: 170,
     sexo: 'Masculino',
     nivelAtividade: 'Moderado'
   });
+  
+  const [mensagem, setMensagem] = useState('');
+
+  // Busca o ID do usuário que foi salvo no localStorage na hora do login
+  const userId = localStorage.getItem('user_id'); 
+  const userToken = localStorage.getItem('token'); 
+  // Caso seu login salve o nome direto no localStorage, use se necessário:
+  const userNameSaved = localStorage.getItem('name');
+
+  useEffect(() => {
+    async function carregarDadosPerfil() {
+      if (!userId) {
+        setDados(prev => ({ ...prev, nome: userNameSaved || 'Usuário Não Logado' }));
+        return;
+      }
+      try {
+        const response = await api.get(`/api/v1/profile/${userId}`);
+        setDados(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar dados do perfil:", error);
+        setDados(prev => ({ ...prev, nome: userNameSaved || 'Ana Souza' }));
+      }
+    }
+    carregarDadosPerfil();
+  }, [userId, userNameSaved]);
+
+  const handleSalvar = async () => {
+    if (!userId) {
+      setMensagem('Erro: Usuário não identificado para salvar.');
+      return;
+    }
+    try {
+      setMensagem('Salvando...');
+      await api.post(`/api/v1/profile/${userId}`, dados);
+      setMensagem('Perfil atualizado com sucesso no banco de dados!');
+      setTimeout(() => setMensagem(''), 3000);
+    } catch (error) {
+      console.error("Erro ao salvar dados do perfil:", error);
+      setMensagem('Erro ao conectar com o servidor para salvar.');
+    }
+  };
 
   const calcularIMC = () => {
+    if (!dados.altura) return 0;
     const alturaMetros = dados.altura / 100;
     return (dados.peso / (alturaMetros * alturaMetros)).toFixed(2);
   };
@@ -31,7 +74,6 @@ function MeuPerfil() {
       'Intenso': 1.725,
     };
 
-    // Fórmula de Harris-Benedict (simplificada)
     let tmb;
     if (dados.sexo === 'Masculino') {
       tmb = 88.36 + (13.4 * dados.peso) + (4.8 * dados.altura) - (5.7 * dados.idade);
@@ -52,13 +94,15 @@ function MeuPerfil() {
     <div className="perfil-container">
       <div className="perfil-card-usuario">
         <div className="perfil-avatar">
-          {dados.nome.charAt(0).toUpperCase()}
+          {dados.nome ? dados.nome.charAt(0).toUpperCase() : 'A'}
         </div>
         <div className="perfil-info-nome">
           <h2>{dados.nome}</h2>
           <span>{dados.idade} anos</span>
         </div>
       </div>
+
+      {mensagem && <div style={{ padding: '10px', color: '#2e7d32', backgroundColor: '#e8f5e9', borderRadius: '5px', marginBottom: '15px', textAlign: 'center' }}>{mensagem}</div>}
 
       <div className="perfil-corpo">
         <div className="perfil-form">
@@ -114,6 +158,10 @@ function MeuPerfil() {
               <option value="Intenso">Intenso</option>
             </select>
           </div>
+          
+          <button className="perfil-botao-objetivos" onClick={handleSalvar} style={{ marginTop: '15px', backgroundColor: '#4caf50', color: 'white' }}>
+            Salvar Dados no Banco
+          </button>
         </div>
 
         <div className="perfil-metricas">
@@ -130,10 +178,6 @@ function MeuPerfil() {
           </div>
         </div>
       </div>
-
-      <button className="perfil-botao-objetivos">
-        Ver objetivos
-      </button>
     </div>
   );
 }
