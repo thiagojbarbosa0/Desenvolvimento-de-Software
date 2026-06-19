@@ -26,7 +26,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-production_url = os.getenv("PRODUCTION_URL")
+production_url = os.getenv("PRODUCTION_URL", "")
 
 Base.metadata.create_all(bind=engine)
  
