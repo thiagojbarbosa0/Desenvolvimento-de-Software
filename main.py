@@ -8,7 +8,7 @@ import json
 import re
 from datetime import datetime
  
-# 🔥 CORREÇÃO: Importei PostLike junto aos outros modelos
+
 from backend.models import Base, User, Profile, Post, PostLike
 from backend.schemas import (
     UserCreate, UserLogin, TokenResponse,
@@ -21,29 +21,52 @@ from backend.chat import responder_mensagem
 # from backend.db import hash_password, verify_password
  
 import uuid
- 
+
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+production_url = os.getenv("PRODUCTION_URL")
+
 Base.metadata.create_all(bind=engine)
  
 app = FastAPI(title="NutriFlow API", version="1.0.0")
  
-# ──────────────────────────────────────────
-# CORS DINÂMICO PARA RANGE DE PORTAS (517x)
-# ──────────────────────────────────────────
+CORS_WHITELIST = [
+    # DESENVOLVIMENTO LOCAL (localhost em qualquer porta)
+    # Aceita: http://localhost:3000, http://127.0.0.1:5173, etc
+    r"^https?://(0\.0\.0\.0|127\.0\.0\.1):.*$",
+    
+    # PRODUÇÃO - SEU FRONTEND NO RENDER
+    production_url,
+]
+ 
+# ──────────────────────────────────────────────────────────────────────────────
+# MIDDLEWARE CORS - Valida origem contra whitelist
+# ──────────────────────────────────────────────────────────────────────────────
+ 
 @app.middleware("http")
-async def cors_dinamico_viteland(request: Request, call_next):
+async def cors_middleware(request: Request, call_next):
     origin = request.headers.get("Origin", "")
     
+    # Pré-flight requests (OPTIONS)
     if request.method == "OPTIONS":
         response = JSONResponse(content={"message": "CORS OK"})
     else:
+        # Requisições normais (GET, POST, etc)
         response = await call_next(request)
-        
-    if origin and re.match(r"^https?://(localhost|127\.0\.0\.1):517\d$", origin):
+    
+    is_allowed = any(
+        re.match(pattern, origin) 
+        for pattern in CORS_WHITELIST
+    )
+    
+    if origin and is_allowed:
         response.headers["Access-Control-Allow-Origin"] = origin
         response.headers["Access-Control-Allow-Credentials"] = "true"
-        response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS, PUT, DELETE"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS, PUT, DELETE, PATCH"
         response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
-        
+    
     return response
  
 # ──────────────────────────────────────────
