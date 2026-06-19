@@ -41,7 +41,7 @@ function Comunidade() {
     if (!novoPostTexto.trim()) return;
 
     try {
-      const response = await fetch('${API_BASE_URL}/api/v1/posts', {
+      const response = await fetch(`${API_BASE_URL}/api/v1/posts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userIdLogado, conteudo: novoPostTexto }),
@@ -60,7 +60,7 @@ function Comunidade() {
     if (!userId) return;
 
     try {
-      const response = await fetch(`http://0.0.0.0:8000/api/v1/posts/${postId}/like`, {
+      const response = await fetch(`${API_BASE_URL}/api/v1/posts/${postId}/like`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userId })
@@ -80,7 +80,7 @@ function Comunidade() {
     if (!novoComentarioTexto.trim()) return;
 
     try {
-      const response = await fetch(`http://0.0.0.0:8000/api/v1/posts/${postId}/comment`, {
+      const response = await fetch(`${API_BASE_URL}/api/v1/posts/${postId}/comment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userIdLogado, comentario: novoComentarioTexto }),
