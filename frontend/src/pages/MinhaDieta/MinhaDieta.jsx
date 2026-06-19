@@ -43,7 +43,7 @@ function MinhaDieta() {
     
     // Futuramente aqui você fará o fetch enviando isso pro banco salvar:
     /*
-    await fetch('http://localhost:3000/api/agenda-semana', {
+    await fetch('http://0.0.0.0:3000/api/agenda-semana', {
        method: 'POST',
        body: JSON.stringify({ userId: 1, receitaId: item.id, dia, tipo })
     });
