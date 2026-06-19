@@ -21,13 +21,13 @@
   width: 260px; 
 }
 
-/* Modificação exclusiva para a logo quando exibida DENTRO da tela de cadastro */
+/* Modificação estrita e definitiva para a logo DENTRO da tela de cadastro */
 .container-cadastro #caixa_logo {
   position: relative !important; 
   width: 260px !important;       
   max-width: 260px !important;
   height: 80px !important;
-  border-radius: 0 0 16px 0 !important; /* O arredondado só vai acontecer aqui */
+  border-radius: 0 0 16px 0 !important;
   margin: 0 !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
 }

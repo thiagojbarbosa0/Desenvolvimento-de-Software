@@ -7,7 +7,7 @@ from sqlalchemy import desc
 import json
 import re
 from datetime import datetime
-
+ 
 # 🔥 CORREÇÃO: Importei PostLike junto aos outros modelos
 from backend.models import Base, User, Profile, Post, PostLike
 from backend.schemas import (
@@ -19,13 +19,13 @@ from backend.database import engine, get_db, hash_password, verify_password
 from backend.ai import generate_plan
 from backend.chat import responder_mensagem
 # from backend.db import hash_password, verify_password
-
+ 
 import uuid
-
+ 
 Base.metadata.create_all(bind=engine)
-
+ 
 app = FastAPI(title="NutriFlow API", version="1.0.0")
-
+ 
 # ──────────────────────────────────────────
 # CORS DINÂMICO PARA RANGE DE PORTAS (517x)
 # ──────────────────────────────────────────
@@ -45,14 +45,14 @@ async def cors_dinamico_viteland(request: Request, call_next):
         response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
         
     return response
-
+ 
 # ──────────────────────────────────────────
 # HEALTHCHECK
 # ──────────────────────────────────────────
 @app.get("/")
 def health():
     return {"status": "online"}
-
+ 
 # ──────────────────────────────────────────
 # AUTH
 # ──────────────────────────────────────────
@@ -60,7 +60,7 @@ def health():
 def cadastro(user_in: UserCreate, db: Session = Depends(get_db)):
     if db.query(User).filter(User.email == user_in.email).first():
         raise HTTPException(status_code=409, detail="E-mail já cadastrado.")
-
+ 
     new_user = User(
         name=user_in.name,
         email=user_in.email.strip().lower(),
@@ -69,16 +69,16 @@ def cadastro(user_in: UserCreate, db: Session = Depends(get_db)):
     db.add(new_user)
     db.commit()
     return {"message": "Conta criada com sucesso."}
-
-
+ 
+ 
 @app.post("/auth/login", response_model=TokenResponse)
 def login(login_in: UserLogin, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == login_in.email.strip().lower()).first()
     if not user or not verify_password(login_in.password, user.password_hash):
         raise HTTPException(status_code=401, detail="E-mail ou senha incorretos.")
-
+ 
     return {"token": user.id, "user_id": user.id, "name": user.name}
-
+ 
 # ──────────────────────────────────────────
 # ROTAS DO PERFIL
 # ──────────────────────────────────────────
@@ -108,7 +108,7 @@ def obtener_perfil(user_id: str, db: Session = Depends(get_db)):
         "sexo": getattr(profile, "biological_sex", "Masculino"),
         "nivelAtividade": getattr(profile, "activity_level", "Moderado")
     }
-
+ 
 @app.post("/api/v1/profile/{user_id}")
 def salvar_perfil(user_id: str, dados: dict, db: Session = Depends(get_db)):
     profile = db.query(Profile).filter(Profile.user_id == user_id).first()
@@ -128,17 +128,17 @@ def salvar_perfil(user_id: str, dados: dict, db: Session = Depends(get_db)):
         
     db.commit()
     return {"status": "success", "message": "Perfil updated com sucesso."}
-
+ 
 # ──────────────────────────────────────────
 # PLANO NUTRICIONAL
 # ──────────────────────────────────────────
 @app.post("/api/v1/plan", response_model=PlanResponse)
 def create_plan(profile: ProfileCreate, db: Session = Depends(get_db)):
     plan_result = generate_plan(profile.dict())
-
+ 
     db_profile = db.query(Profile).filter(Profile.user_id == profile.user_id).first()
     plan_json_str = json.dumps(plan_result, ensure_ascii=False)
-
+ 
     if db_profile:
         for key, value in profile.dict().items():
             setattr(db_profile, key, value)
@@ -146,10 +146,10 @@ def create_plan(profile: ProfileCreate, db: Session = Depends(get_db)):
     else:
         db_profile = Profile(**profile.dict(), plan_json=plan_json_str)
         db.add(db_profile)
-
+ 
     db.commit()
     return {"status": "success", "data": plan_result}
-
+ 
 # ──────────────────────────────────────────
 # CHAT
 # ──────────────────────────────────────────
@@ -160,7 +160,7 @@ def chat(body: ChatRequest):
         return {"resposta": resposta}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
+ 
 # ──────────────────────────────────────────
 # DASHBOARD
 # ──────────────────────────────────────────
@@ -173,7 +173,7 @@ def obtener_dados_dashboard(user_id: str, db: Session = Depends(get_db)):
             "meta_kcal": 2000,
             "meta_treino": "Nenhum treino listado.",
         }
-
+ 
     profile = db.query(Profile).filter(Profile.user_id == user_id).first()
     if not profile:
         return {
@@ -182,14 +182,14 @@ def obtener_dados_dashboard(user_id: str, db: Session = Depends(get_db)):
             "meta_kcal": 2000,
             "meta_treino": "Preencha seus dados físicos no Perfil.",
         }
-
+ 
     plan = {}
     if profile.plan_json and profile.plan_json != "{}":
         try:
             plan = json.loads(profile.plan_json)
         except:
             plan = {}
-
+ 
     if plan:
         frase = plan.get("motivational_phrase", "Continue firme no seu objetivo!")
         meta_kcal = plan.get("daily_goal", "Consulte seu plano.")
@@ -210,20 +210,20 @@ def obtener_dados_dashboard(user_id: str, db: Session = Depends(get_db)):
         
         frase = getattr(profile, "motivations", "Quero me sentir mais leve e confiante.")
         meta_treino = f"Focar no plano de {objetivo}"
-
+ 
     return {
         "frase": frase,
         "dias_consecutivos": getattr(profile, "streak_days", 0) or 0,
         "meta_kcal": meta_kcal,
         "meta_treino": meta_treino,
     }
-
+ 
 @app.post("/dashboard/{user_id}/checkin")
 def realizar_checkin(user_id: str, db: Session = Depends(get_db)):
     profile = db.query(Profile).filter(Profile.user_id == user_id).first()
     if not profile:
         raise HTTPException(status_code=404, detail="Perfil não encontrado.")
-
+ 
     hoje_str = datetime.utcnow().date().isoformat()
     
     if profile.last_checkin != hoje_str:
@@ -233,19 +233,19 @@ def realizar_checkin(user_id: str, db: Session = Depends(get_db)):
         return {"status": "sucesso", "dias_consecutivos": profile.streak_days, "mensagem": "Check-in feito!"}
         
     return {"status": "aviso", "dias_consecutivos": profile.streak_days, "mensagem": "Você já fez check-in hoje!"}
-
+ 
 @app.post("/dashboard/{user_id}/reiniciar")
 def reiniciar_contagem_dashboard(user_id: str, db: Session = Depends(get_db)):
     profile = db.query(Profile).filter(Profile.user_id == user_id).first()
     if not profile:
         raise HTTPException(status_code=404, detail="Perfil não encontrado.")
-
+ 
     profile.streak_days = 0
     profile.last_checkin = None
     db.commit()
     return {"status": "sucesso", "mensagem": "Contagem reiniciada com sucesso."}
-
-
+ 
+ 
 # ──────────────────────────────────────────
 # ROTAS DA COMUNIDADE (ATUALIZADAS)
 # ──────────────────────────────────────────
@@ -275,7 +275,7 @@ def listar_posts(filtro: str = "Para você", user_id: str = None, db: Session = 
             comentarios = json.loads(post.comments_json) if post.comments_json else []
         except:
             comentarios = []
-
+ 
         resultado.append({
             "id": post.id,
             "autor_name": post.author_name,
@@ -287,8 +287,8 @@ def listar_posts(filtro: str = "Para você", user_id: str = None, db: Session = 
         })
         
     return resultado
-
-
+ 
+ 
 @app.post("/api/v1/posts", status_code=status.HTTP_201_CREATED)
 def criar_post(dados: dict, db: Session = Depends(get_db)):
     user_id = dados.get("user_id")
@@ -300,7 +300,7 @@ def criar_post(dados: dict, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="Usuário não encontrado.")
-
+ 
     novo_post = Post(
         id=str(uuid.uuid4()),                       
         author_name=user.name,                      
@@ -316,12 +316,12 @@ def criar_post(dados: dict, db: Session = Depends(get_db)):
     db.refresh(novo_post)
     
     return {"status": "success", "message": "Post publicado com sucesso!", "post_id": novo_post.id}
-
-
+ 
+ 
 # ──────────────────────────────────────────
 # INTERAÇÕES DA COMUNIDADE (CURTIDAS E COMENTÁRIOS)
 # ──────────────────────────────────────────
-
+ 
 @app.post("/api/v1/posts/{post_id}/like")
 def curtir_post(post_id: str, dados: dict, db: Session = Depends(get_db)):
     user_id = dados.get("user_id")
@@ -337,7 +337,7 @@ def curtir_post(post_id: str, dados: dict, db: Session = Depends(get_db)):
         PostLike.post_id == post_id, 
         PostLike.user_id == user_id
     ).first()
-
+ 
     if like_existente:
         # Se já curtiu, remove o like (Descurtir)
         db.delete(like_existente)
@@ -352,8 +352,8 @@ def curtir_post(post_id: str, dados: dict, db: Session = Depends(get_db)):
     db.refresh(post)
     
     return {"status": "success", "likes": post.likes}
-
-
+ 
+ 
 @app.post("/api/v1/posts/{post_id}/comment")
 def adicionar_comentario(post_id: str, dados: dict, db: Session = Depends(get_db)):
     user_id = dados.get("user_id")
@@ -369,7 +369,7 @@ def adicionar_comentario(post_id: str, dados: dict, db: Session = Depends(get_db
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="Usuário não encontrado.")
-
+ 
     try:
         lista_comentarios = json.loads(post.comments_json) if post.comments_json else []
     except:

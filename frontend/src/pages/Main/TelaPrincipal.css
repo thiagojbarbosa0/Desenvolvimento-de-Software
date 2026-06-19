@@ -107,6 +107,31 @@ html, body, #root {
     font-weight: 600;
 }
 
+/* Botão Sair - Novo */
+.container-sair {
+    padding: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.botao-sair {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 10px 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #cc0000;
+    font-size: 24px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: 0.2s;
+}
+
+.botao-sair:hover {
+    background-color: #fff0f0;
+    border-radius: 10px;
+}
+
 /* ======================================================
    ÁREA DE CONTEÚDO COM ANIMAÇÃO DE TROCA DE TELA
 ====================================================== */

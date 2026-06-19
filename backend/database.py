@@ -2,25 +2,25 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from backend.config import settings
-
+ 
 import hashlib
 import secrets
-
+ 
 engine = create_engine(settings.database_url, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
-
+ 
 def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
-
-
-
+ 
+ 
+ 
 # from __future__ import annotations
-
+ 
 # import hashlib
 # import json
 # import secrets
@@ -28,26 +28,26 @@ def get_db():
 # import uuid
 # from pathlib import Path
 # from typing import Any, Dict, List, Optional
-
+ 
 # DB_PATH = Path("nutriflow.db")
-
-
+ 
+ 
 # def now_iso() -> str:
 #     from datetime import datetime
 #     return datetime.now().isoformat(timespec="seconds")
-
-
+ 
+ 
 # def today_str() -> str:
 #     from datetime import date
 #     return date.today().isoformat()
-
-
+ 
+ 
 # def get_conn() -> sqlite3.Connection:
 #     conn = sqlite3.connect(DB_PATH)
 #     conn.row_factory = sqlite3.Row
 #     return conn
-
-
+ 
+ 
 def hash_password(password: str, salt: Optional[str] = None) -> str:
     if salt is None:
         salt = secrets.token_hex(16)
@@ -58,16 +58,16 @@ def hash_password(password: str, salt: Optional[str] = None) -> str:
         200_000,
     ).hex()
     return f"{salt}${digest}"
-
-
+ 
+ 
 def verify_password(password: str, stored: str) -> bool:
     try:
         salt, digest = stored.split("$", 1)
         return hash_password(password, salt) == stored
     except Exception:
         return False
-
-
+ 
+ 
 # def init_db() -> None:
 #     with get_conn() as conn:
 #         conn.execute(
@@ -137,20 +137,20 @@ def verify_password(password: str, stored: str) -> bool:
 #             """
 #         )
 #     seed_demo_data()
-
-
+ 
+ 
 # def user_count() -> int:
 #     with get_conn() as conn:
 #         row = conn.execute("SELECT COUNT(*) AS c FROM users").fetchone()
 #         return int(row["c"]) if row else 0
-
-
+ 
+ 
 # def post_count() -> int:
 #     with get_conn() as conn:
 #         row = conn.execute("SELECT COUNT(*) AS c FROM posts").fetchone()
 #         return int(row["c"]) if row else 0
-
-
+ 
+ 
 # def create_user(name: str, email: str, password: str) -> bool:
 #     email = email.strip().lower()
 #     if get_user_by_email(email):
@@ -161,30 +161,30 @@ def verify_password(password: str, stored: str) -> bool:
 #             (str(uuid.uuid4()), email, hash_password(password), name.strip(), now_iso()),
 #         )
 #     return True
-
-
+ 
+ 
 # def get_user_by_email(email: str) -> Optional[sqlite3.Row]:
 #     with get_conn() as conn:
 #         return conn.execute("SELECT * FROM users WHERE email = ?", (email.strip().lower(),)).fetchone()
-
-
+ 
+ 
 # def get_user_by_id(user_id: str) -> Optional[sqlite3.Row]:
 #     with get_conn() as conn:
 #         return conn.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
-
-
+ 
+ 
 # def authenticate(email: str, password: str) -> Optional[sqlite3.Row]:
 #     user = get_user_by_email(email)
 #     if user and verify_password(password, user["password_hash"]):
 #         return user
 #     return None
-
-
+ 
+ 
 # def get_profile(user_id: str) -> Optional[sqlite3.Row]:
 #     with get_conn() as conn:
 #         return conn.execute("SELECT * FROM profiles WHERE user_id = ?", (user_id,)).fetchone()
-
-
+ 
+ 
 # def upsert_profile(user_id: str, profile: Dict[str, Any]) -> None:
 #     payload = {
 #         "user_id": user_id,
@@ -256,34 +256,34 @@ def verify_password(password: str, stored: str) -> bool:
 #                 """,
 #                 payload,
 #             )
-
-
+ 
+ 
 # def all_posts() -> List[sqlite3.Row]:
 #     with get_conn() as conn:
 #         return conn.execute("SELECT * FROM posts ORDER BY created_at DESC").fetchall()
-
-
+ 
+ 
 # def create_post(author_name: str, author_tag: str, content: str) -> None:
 #     with get_conn() as conn:
 #         conn.execute(
 #             "INSERT INTO posts (id, author_name, author_tag, content, likes, comments_json, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
 #             (str(uuid.uuid4()), author_name, author_tag, content, 0, json.dumps([], ensure_ascii=False), now_iso()),
 #         )
-
-
+ 
+ 
 # def like_post(post_id: str) -> None:
 #     with get_conn() as conn:
 #         conn.execute("UPDATE posts SET likes = likes + 1 WHERE id = ?", (post_id,))
-
-
+ 
+ 
 # def add_comment(post_id: str, comment: str) -> None:
 #     with get_conn() as conn:
 #         row = conn.execute("SELECT comments_json FROM posts WHERE id = ?", (post_id,)).fetchone()
 #         comments = json.loads(row["comments_json"] or "[]") if row else []
 #         comments.append({"text": comment, "created_at": now_iso()})
 #         conn.execute("UPDATE posts SET comments_json = ? WHERE id = ?", (json.dumps(comments, ensure_ascii=False), post_id))
-
-
+ 
+ 
 # def record_checkin(user_id: str, mood: str, notes: str, done: bool = True) -> None:
 #     day = today_str()
 #     with get_conn() as conn:
@@ -299,16 +299,16 @@ def verify_password(password: str, stored: str) -> bool:
 #             "UPDATE profiles SET streak_days = ?, last_checkin = ?, updated_at = ? WHERE user_id = ?",
 #             (streak, day, now_iso(), user_id),
 #         )
-
-
+ 
+ 
 # def reset_streak(user_id: str) -> None:
 #     with get_conn() as conn:
 #         conn.execute(
 #             "UPDATE profiles SET streak_days = 0, last_checkin = NULL, updated_at = ? WHERE user_id = ?",
 #             (now_iso(), user_id),
 #         )
-
-
+ 
+ 
 # def seed_demo_data() -> None:
 #     if user_count() == 0:
 #         demo_users = [
@@ -392,7 +392,7 @@ def verify_password(password: str, stored: str) -> bool:
 #                 profile = dict(demo["profile"])
 #                 profile["plan_json"] = {}
 #                 upsert_profile(user["id"], profile)
-
+ 
 #     if post_count() == 0:
 #         demo_posts = [
 #             ("Marina", "@marinafit", "Hoje consegui seguir meu plano por 5 dias seguidos. Pequenos passos fazem diferença!"),

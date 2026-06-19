@@ -83,7 +83,7 @@ function TelaCadastro() {
 
   return (
     <div className="container-cadastro">
-      <div className=".topo-cadastro"><MostrarLogo /></div>
+      <div className="topo-cadastro"><MostrarLogo /></div>
 
       <main className="conteudo-cadastro">
         <div className="card-cadastro">

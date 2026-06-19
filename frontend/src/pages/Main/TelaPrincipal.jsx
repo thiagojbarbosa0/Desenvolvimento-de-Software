@@ -66,6 +66,13 @@ function TelaPrincipal() {
               ))}
             </ul>
           </nav>
+
+          <div className="container-sair">
+              <button onClick={handleLogout} className="botao-sair">
+                <span className="icone material-symbols-outlined">logout</span>
+                <span className="texto">Sair</span>
+              </button>
+            </div>
         </aside>
 
         {/* A chave (key) força o elemento a remontar e disparar a animação de troca de tela */}
