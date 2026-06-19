@@ -1,95 +1,396 @@
+/* ======================================================
+   ESTRUTURA GERAL DO DASHBOARD (CENTRALIZADO VIRTUALMENTE)
+====================================================== */
 .dashboard-container {
-  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  position: relative;
-  min-height: 80vh;
-  font-family: sans-serif;
+  justify-content: center; /* Centraliza verticalmente o conteúdo no espaço disponível */
+  gap: 28px;
+  max-width: 1100px;
+  min-height: 100vh; /* Ocupa a altura total da janela para permitir a centralização perfeita */
+  margin: 0 auto;
+  padding: 25px; /* Margem pequena e equilibrada ao redor de todo o dashboard */
+  box-sizing: border-box;
+  font-family: 'GoogleSansFlex', -apple-system, sans-serif;
+  background-color: #ffffff;
 }
 
-/* Banner de Frase */
+/* ======================================================
+   BANNER MOTIVACIONAL PREMIUM
+====================================================== */
 .banner-motivacional {
-  background-color: #d1ebd5;
+  background-color: #E8F5E9;
+  border-left: 5px solid #5FB65C;
   border-radius: 16px;
-  padding: 24px;
-  text-align: center;
-  color: #2c4c38;
-  font-size: 22px;
+  padding: 24px 40px;
+  margin-top: 2%;
+  position: relative;
+  overflow: hidden;
+  min-height: fit-content;
+  box-shadow: 0 4px 16px rgba(95, 182, 92, 0.05);
+  animation: fadeInDashboard 0.5s ease-out;
 }
 
-/* Grid de cards lado a lado */
-.cards-dashboard-grid {
+.banner-aspas {
+  position: absolute;
+  top: -15px;
+  left: 15px;
+  font-size: 80px;
+  color: rgba(95, 182, 92, 0.12);
+  font-family: serif;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.frase-texto {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #07452C;
+  font-weight: 600;
+  position: relative;
+  z-index: 2;
+}
+
+/* ======================================================
+   BLOCO HORIZONTAL INTELIGENTE (CONFORME IMAGE_754B7F.JPG)
+====================================================== */
+.dashboard-conteudo-principal {
   display: flex;
+  align-items: stretch; /* Garante que as colunas da esquerda e direita tenham alturas equivalentes */
+  gap: 32px;
+  width: 100%;
+}
+
+/* Lado Esquerdo: Cards de Monitoramento Empilhados */
+.cards-dashboard-grid {
+  flex: 1.1; 
+  display: flex;
+  flex-direction: column; 
   gap: 24px;
 }
 
-.card-dashboard {
-  flex: 1;
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 16px;
-  padding: 20px;
+/* Lado Direito: Caixa Retangular da Imagem Customizada */
+.dashboard-ilustracao-container {
+  flex: 0.9;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
-  box-shadow: 0px 4px 10px rgba(0,0,0,0.05);
-  min-height: 180px;
+  border-radius: 24px; /* Cantos arredondados suavizados como na imagem */
+  padding: 0; 
+  box-sizing: border-box;
+  overflow: hidden;
+  height: 100%; /* Acompanha dinamicamente a altura combinada dos dois cards ao lado */
+  max-height: 65vh;
 }
 
-.card-dashboard h3 {
-  font-size: 16px;
-  text-align: center;
-  color: #333;
-  margin: 0 0 10px 0;
+.dashboard-imagem {
+  width: 100%;
+  height: 100%;
+  min-height: 420px; /* Mantém a proporção do retângulo vertical estável */
+  object-fit: cover; 
+  border-radius: 24px;
+  animation: fadeInDashboard 0.8s ease-out;
+}
+
+/* ======================================================
+   ESTILO DOS CARDS INDIVIDUAIS
+====================================================== */
+.card-dashboard-item {
+  background: #fdfcfc;
+  border: 1px solid #edf1ee;
+  border-radius: 24px; /* Combinando com a suavidade dos cantos da imagem */
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.02);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 195px;
+  box-sizing: border-box;
+}
+
+.card-dashboard-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(7, 69, 44, 0.04);
+}
+
+.card-dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.card-dashboard-header h3 {
+  font-family: 'Cabin', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #666666;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-card {
+  font-size: 11px;
+  font-weight: 600;
+  color: #5FB65C;
+  background-color: rgba(95, 182, 92, 0.1);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.meta-badge {
+  color: #07452C;
+  background-color: rgba(7, 69, 44, 0.08);
+}
+
+.card-dashboard-corpo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 12px;
 }
 
 .numero-destaque {
-  font-size: 54px;
-  font-weight: bold;
-  color: #000;
+  font-size: 42px;
+  font-weight: 800;
+  color: #07452C;
+  line-height: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
 }
 
-.texto-meta {
+.unidade-destaque {
+  font-size: 16px;
+  font-weight: 500;
+  color: #5FB65C;
+}
+
+.legenda-card {
+  font-size: 13px;
+  color: #777777;
+  margin: 6px 0 0 0;
+}
+
+.texto-meta-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meta-calorias {
   font-size: 18px;
-  text-align: center;
-  color: #222;
+  color: #2c4232;
+  margin: 0;
 }
 
-/* Botões pequenos dos cards */
-.btn-card-reiniciar, .btn-card-redefinir {
-  background-color: #a3d4b2;
-  color: #2c4c38;
-  border: none;
-  border-radius: 8px;
-  padding: 6px 14px;
+.meta-calorias strong {
+  color: #07452C;
+  font-weight: 700;
+}
+
+.meta-exercicio {
+  font-size: 13px;
+  color: #666666;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.card-dashboard-acoes {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-card-reiniciar, 
+.btn-card-redefinir {
+  background-color: transparent;
+  color: #777777;
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  padding: 8px 16px;
   cursor: pointer;
-  align-self: flex-end; /* Joga o botão pro cantinho direito inferior do card */
-  font-size: 12px;
-  font-weight: bold;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'GoogleSansFlex', sans-serif;
+  transition: all 0.2s ease;
 }
 
-.btn-card-reiniciar:hover, .btn-card-redefinir:hover {
-  background-color: #8bc39c;
+.btn-card-reiniciar:hover {
+  background-color: #FEEBEE;
+  border-color: #FEEBEE;
+  color: #D32F2F;
 }
 
-/* Botão de desistência do canto */
+.btn-card-redefinir:hover {
+  background-color: #E8F5E9;
+  border-color: #E8F5E9;
+  color: #07452C;
+}
+
+/* ======================================================
+   RODAPÉ / BOTÃO DE SUPORTE
+====================================================== */
+.dashboard-suporte-footer {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
 .btn-desistir {
-  position: absolute;
-  bottom: 10px;
-  right: 24px;
-  background: white;
-  color: #4da66a;
+  background: #ffffff;
+  color: #555555;
   border: 1px solid #e0e0e0;
   padding: 12px 24px;
-  border-radius: 12px;
-  font-weight: bold;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'GoogleSansFlex', sans-serif;
   cursor: pointer;
-  box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
 }
 
 .btn-desistir:hover {
-  background-color: #fafafa;
-  color: #ff4d4d; /*dar um destaque quando passar o mouse*/
+  background-color: #FEEBEE;
+  border-color: #ffcdd2;
+  color: #D32F2F;
+}
+
+@keyframes fadeInDashboard {
+  from { opacity: 0; transform: scale(0.99); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ======================================================
+   RESPONSIVIDADE (QUEBRA SEGURA PARA MOBILE)
+====================================================== */
+@media (max-width: 850px) {
+  .dashboard-container {
+    margin: 1%;
+    padding: 16px;
+    justify-content: flex-start; /* Evita compressão em telas pequenas */
+    min-height: auto;
+    min-width: auto;
+  }
+
+  .dashboard-conteudo-principal {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .dashboard-imagem {
+    display: none;
+  }
+
+  .dashboard-suporte-footer {
+    justify-content: center;
+  }
+
+  .btn-desistir {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ======================================================
+   MODAL DE AVISO / CONFIRMAÇÃO (NOVO)
+====================================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(3px); /* Efeito premium de desfoque no fundo */
+  animation: fadeInModal 0.2s ease-out;
+}
+
+.modal-box {
+  background-color: #ffffff;
+  padding: 32px;
+  border-radius: 24px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  font-family: 'GoogleSansFlex', sans-serif;
+  animation: slideUpModal 0.3s ease-out;
+}
+
+.modal-titulo {
+  color: #07452C;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+}
+
+.modal-mensagem {
+  color: #555555;
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 0 0 28px 0;
+}
+
+.modal-acoes {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.btn-modal-cancelar {
+  background-color: transparent;
+  color: #777777;
+  border: 1px solid #dcdcdc;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.btn-modal-cancelar:hover {
+  background-color: #f5f5f5;
+  color: #333333;
+}
+
+.btn-modal-confirmar {
+  background-color: #5FB65C;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.btn-modal-confirmar:hover {
+  background-color: #4da64a;
+}
+
+@keyframes fadeInModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUpModal {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }

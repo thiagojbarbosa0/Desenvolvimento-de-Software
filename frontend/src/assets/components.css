@@ -1,0 +1,294 @@
+/* ======================================================
+   LOGO E IDENTIDADE VISUAL
+====================================================== */
+#caixa_logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  height: 80px; /* Altura fixa que empurra os elementos para baixo corretamente */
+  background-color: #5FB65C;
+  border-radius: 0; /* Totalmente reto na barra lateral */
+  margin: 0;
+  padding: 0 16px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  position: relative; /* Garante que ele ocupe espaço físico e não sobreponha ninguém */
+}
+
+#logo_texto {
+  font-family: 'Cabin', -apple-system, sans-serif;
+  font-size: 32px; /* Reduzido o tamanho gigante anterior */
+  font-weight: 700;
+  color: #07452C;
+  margin: 0;
+  text-shadow: none; /* Removida a borda preta dura para um visual clean */
+}
+
+#logo_estendido {
+  display: flex;
+  width: 100%;
+}
+
+#caixa_logo_estendido {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 80px;
+  background-color: #5FB65C;
+  padding-left: 24px;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+#logo_texto_estendido {
+  font-family: 'Informal Roman', serif;
+  font-size: 42px; /* Reescalado para não quebrar layouts */
+  color: white;
+  margin: 0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* ======================================================
+   INPUTS E FORMULÁRIOS PADRÃO
+====================================================== */
+.formulario_padrao {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 450px;
+}
+
+.input_padrao_texto,
+.input_padrao_senha {
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
+  border: 1px solid #dcdcdc;
+  background-color: #fafafa;
+  padding: 0 16px;
+  font-size: 15px;
+  font-family: 'GoogleSansFlex', sans-serif;
+  color: #333;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+/* Efeito de foco moderno com a cor da marca */
+.input_padrao_texto:focus,
+.input_padrao_senha:focus {
+  border-color: #5FB65C;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(95, 182, 92, 0.15);
+  outline: none;
+}
+
+/* ======================================================
+   CARD DE AJUDA SHELL
+====================================================== */
+.card-ajuda-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px); /* Efeito blur de fundo moderno */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeInComponent 0.25s ease-out;
+}
+
+.card-ajuda {
+  background-color: #ffffff;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  animation: scaleUpComponent 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.card-ajuda-header {
+  background-color: #f4f9f4;
+  padding: 20px 24px;
+  border-bottom: 1px solid #eef4ee;
+}
+
+.card-ajuda-header h2 {
+  margin: 0;
+  font-family: 'GoogleSansFlex', sans-serif;
+  font-size: 20px;
+  color: #07452C;
+  font-weight: 600;
+}
+
+.card-ajuda-corpo {
+  padding: 24px;
+  font-family: 'GoogleSansFlex', sans-serif;
+  font-size: 15px;
+  color: #555;
+  line-height: 1.5;
+}
+
+/* ======================================================
+   SELETOR MÚLTIPLO REUTILIZÁVEL (index.css refatorado aqui)
+====================================================== */
+.seletor-multiplo-container {
+  width: 100%;
+  position: relative;
+}
+
+.seletor-multiplo-campo {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid #dcdcdc;
+  border-radius: 12px;
+  background-color: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 14px;
+  box-sizing: border-box;
+  cursor: text;
+  transition: all 0.2s ease;
+}
+
+.seletor-multiplo-campo:hover {
+  border-color: #b8b8b8;
+}
+
+.seletor-multiplo-container.focado .seletor-multiplo-campo {
+  border-color: #5FB65C;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(95, 182, 92, 0.15);
+}
+
+.seletor-multiplo-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+
+.seletor-multiplo-tag {
+  background-color: #e2f0e2;
+  color: #07452C;
+  border-radius: 8px;
+  padding: 4px 8px 4px 10px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: 'GoogleSansFlex', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.seletor-multiplo-tag-remover {
+  background: none;
+  border: none;
+  color: #07452C;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 2px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition: opacity 0.15s ease;
+}
+
+.seletor-multiplo-tag-remover:hover {
+  opacity: 1;
+  background-color: rgba(7, 69, 44, 0.1);
+}
+
+.seletor-multiplo-input {
+  flex: 1;
+  min-width: 80px;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 14px;
+  font-family: inherit;
+  color: #333;
+  padding: 4px 0;
+}
+
+.seletor-multiplo-input::placeholder {
+  color: #bbb;
+}
+
+.seletor-multiplo-seta {
+  font-size: 18px;
+  color: #788d7d;
+  transition: transform 0.2s ease;
+  margin-left: 8px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.seletor-multiplo-seta.aberta {
+  transform: rotate(180deg);
+}
+
+.seletor-multiplo-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 110;
+}
+
+.seletor-multiplo-opcao {
+  padding: 10px 14px;
+  font-size: 14px;
+  color: #444;
+  font-family: 'GoogleSansFlex', sans-serif;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.seletor-multiplo-opcao:hover {
+  background-color: #f4f9f4;
+  color: #07452C;
+}
+
+/* ======================================================
+   ANIMAÇÕES AUXILIARES
+====================================================== */
+@keyframes fadeInComponent {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUpComponent {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Ajuste Responsivo para o Componente de Logo Lateral */
+@media (max-width: 768px) {
+  #caixa_logo {
+    border-radius: 0;
+    max-width: 100%;
+    height: 60px;
+  }
+}

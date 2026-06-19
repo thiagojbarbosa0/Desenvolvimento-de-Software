@@ -1,6 +1,6 @@
 import pytest
 from backend.plan import bmi, bmi_category, default_motivational_phrase, generate_fallback_plan
-from backend.db import hash_password, verify_password
+from backend.security import hash_password, verify_password
 
 # ==========================================
 # TESTES UNITÁRIOS PARA backend/plan.py

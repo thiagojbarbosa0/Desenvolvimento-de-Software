@@ -15,12 +15,25 @@ function TelaPrincipal() {
   }, [navigate]);
 
   const menus = [
-    { nome: "Meu perfil", icone: "👤", rota: "/tela-principal/perfil" },
-    { nome: "Dashboard", icone: "🏠", rota: "/tela-principal/dashboard" },
-    { nome: "Comunidade", icone: "💬", rota: "/tela-principal/comunidade" },
-    { nome: "Minha dieta", icone: "🍲", rota: "/tela-principal/dieta" },
-    { nome: "Consultor IA", icone: "🤖", rota: "/tela-principal" },
+    { nome: "Meu perfil", icone: "person", rota: "/tela-principal/perfil" },
+    { nome: "Dashboard", icone: "check", rota: "/tela-principal/dashboard" },
+    { nome: "Comunidade", icone: "groups", rota: "/tela-principal/comunidade" },
+    { nome: "Minha dieta", icone: "favorite", rota: "/tela-principal/dieta" },
+    { nome: "Consultor IA", icone: "comment", rota: "/tela-principal" },
   ];
+
+  const handleLogout = () => {
+    // 1. Limpa o histórico específico do usuário antes de deslogar
+    const userId = localStorage.getItem('user_id');
+    if (userId) {
+      localStorage.removeItem(`chat_historico_${userId}`);
+    }
+    
+    // 2. Remove tokens e redireciona
+    localStorage.removeItem('token');
+    localStorage.removeItem('user_id');
+    navigate('/tela-login');
+  };
 
   const obterPaginaAtiva = () => {
     if (location.pathname.includes('dashboard')) return "Dashboard";
@@ -33,37 +46,39 @@ function TelaPrincipal() {
   const paginaAtiva = obterPaginaAtiva();
 
   return (
-    <div className='limitador_tags'>
-      
-      <header className="topo-logo">
-        <MostrarLogo/>
-        <div className='caixa_cabecalho'>
-          <h1>{paginaAtiva} - Sistema NutriAI</h1>
-        </div>   
-      </header>
-      
-      <div className='corpo-layout'>
-        <aside className="barra_lateral">
-          <nav>
+    <div className="limitador_tags">
+      <div className="corpo-layout">
+        <aside className={`barra_lateral ${location.pathname.includes('/dieta') ? 'barra_lateral-com-logo' : ''}`}>
+          <div className="topo">
+            <MostrarLogo />
+          </div>
+          <nav className="menu-navegacao">
             <ul>
               {menus.map((item) => (
-                <li 
-                  key={item.nome} 
-                  className={item.nome === paginaAtiva ? "ativo" : ""}
+                <li
+                  key={item.nome}
+                  className={item.nome === paginaAtiva ? 'ativo' : ''}
                   onClick={() => navigate(item.rota)}
                 >
-                  <span className="icone">{item.icone}</span>
+                  <span className="icone material-symbols-outlined">{item.icone}</span>
                   <span className="texto">{item.nome}</span>
                 </li>
               ))}
             </ul>
           </nav>
+
+          <div className="container-sair">
+              <button onClick={handleLogout} className="botao-sair">
+                <span className="icone material-symbols-outlined">logout</span>
+                <span className="texto">Sair</span>
+              </button>
+            </div>
         </aside>
-        
-        <div style={{ flex: 1, display: 'flex' }}>
+
+        {/* A chave (key) força o elemento a remontar e disparar a animação de troca de tela */}
+        <div className="area-conteudo" key={location.pathname}>
           <Outlet />
         </div>
-
       </div>
     </div>
   );

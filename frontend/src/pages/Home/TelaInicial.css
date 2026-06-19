@@ -1,103 +1,174 @@
-/*Registro de fontes externas*/
-@font-face {
-  font-family: 'Informal Roman';
-  src: url('src/assets/fonts/INFROMAN.TTF') 
-  format('truetype');
-}
-
-@font-face {
-  font-family: 'Inika-Regular';
-  src: url('src/assets/fonts/Inika-Regular.ttf')
-  format('truetype');
-}
-/******************************************************************************************************************************/
-
-#saudacao{
+/* ======================================================
+   ESTRUTURA BASE E BACKGROUND
+====================================================== */
+.container-boas-vindas {
   display: flex;
   flex-direction: column;
-  justify-content:space-evenly;
-  align-items:center
+  min-height: 100vh;
+  width: 100%;
+  background-color: #fff;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
-#texto_saudacao {
-  font-family: 'Inika-Regular';
-  font-size: 100px;
-  -webkit-text-fill-color: black;
-  
+.topo-inicial {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
-/******************************************************************************************************************************/
 
-#descricao{
-  width: 90%;
-  max-width: 2200px;
-  height: auto;
-  min-height: 364px;
+.conteudo-principal {
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 40px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ======================================================
+   BLOCO DE APRESENTAÇÃO (TEXTOS REESCALONADOS)
+====================================================== */
+.bloco-saudacao {
+  text-align: center;
+  margin-bottom: 60px;
+  animation: fadeInDown 0.6s ease-out;
+}
+
+#texto_saudacao {
+  font-family: 'Cabin', -apple-system, sans-serif;
+  font-size: clamp(36px, 6vw, 64px); /* Tamanho fluido baseado no monitor */
+  font-weight: 700;
+  color: #07452C; /* Tom escuro para melhor contraste */
+  margin: 0 0 16px 0;
+  letter-spacing: -0.5px;
 }
 
 #texto_descricao {
-  font-family:'Inika-Regular';
-  font-size: 50px;
-  text-align: center;
+  font-family: 'GoogleSansFlex', -apple-system, sans-serif;
+  font-size: clamp(16px, 2.5vw, 20px); /* Fluido e infinitamente mais legível */
+  color: #444444;
+  line-height: 1.6;
+  max-width: 760px;
+  margin: 0 auto;
 }
-/******************************************************************************************************************************/
 
-/*Organizando o container principal*/
-#botoes_tela_inicial {
+/* ======================================================
+   SEÇÃO DE BOTÕES / CARD DE AÇÕES
+====================================================== */
+#botoes_TelaInicial {
   display: flex;
   flex-direction: row; 
   justify-content: center; 
-  gap: 50px; 
-  margin-top: 40px; 
+  gap: 60px; /* Reduzido de exagerados 300px para coerência visual */
+  width: 100%;
+  animation: fadeInUp 0.6s ease-out;
 }
 
-/*Selecionando os componentes do container e os organizando*/
-#botao_continuar,
-#Criar_conta {
+.card-acao {
   display: flex;
   flex-direction: column;
   align-items: center; 
-  gap: 10px; 
+  gap: 12px; 
+  flex: 1;
+  max-width: 320px;
 }
-/*Estilização do botão Continuar*/
-#botao_continuar button {
+
+/* Estilo Base dos Botões Modernos */
+.card-acao button {
+  width: 100%;
+  height: 56px; /* Altura moderna e confortável para clique */
+  border-radius: 14px;
+  font-family: 'Comme', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Botão Entrar (Verde NutriAI) */
+.acao-entrar button {
   background-color: #5FB65C;
-  width: 345px;
-  height: 98px;
-  border-radius: 20px 20px 20px 20px;
-  font-family: 'Inika-Regular';
-  font-size: 45px;
-}
-/*Estilização do texto de Continuar*/
-#botao_continuar p{
-  display: flex;
-  flex-direction: column;
-  justify-content:space-evenly;
-  align-items: center;
-  font-family: 'Inika-Regular';
-  font-size: 30px;
+  color: #FFFFFF;
 }
 
-/*Estilização do botão Criar Conta*/
-#Criar_conta button {
-  background-color: #F6F6F6;
-  width: 538px;
-  height: 94px;
-  border-radius: 20px 20px 20px 20px;
-  font-family: 'Inika-Regular';
-  font-size: 45px;
-}
-/*Estilização do texto Criar Conta*/
-#Criar_conta {
-  display: flex;
-  flex-direction: column;
-  justify-content:space-evenly;
-  align-items: center;
-  font-family: 'Inika-Regular';
-  font-size: 30px;
+.acao-entrar button:hover {
+  background-color: #4ba348;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(95, 182, 92, 0.3);
 }
 
-/******************************************************************************************************************************/
+/* Botão Criar Conta (Clean Contrast) */
+.acao-cadastrar button {
+  background-color: #FFFFFF;
+  color: #07452C;
+  border: 1px solid #e0e0e0;
+}
+
+.acao-cadastrar button:hover {
+  background-color: #f5f5f5;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.card-acao button:active {
+  transform: translateY(0);
+}
+
+/* Estilização dos textos de status abaixo dos botões */
+.card-acao p {
+  font-family: 'GoogleSansFlex', sans-serif;
+  font-size: 14px;
+  color: #666666;
+  margin: 0;
+  text-align: center;
+}
+
+/* ======================================================
+   ANIMAÇÕES DE ENTRADA SUAVE
+====================================================== */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ======================================================
+   MEDIA QUERY: RESPONSIVIDADE PARA MOBILE/TABLET
+====================================================== */
+@media (max-width: 768px) {
+  .conteudo-principal {
+    justify-content: flex-start;
+    padding-top: 20px;
+  }
+
+  .bloke-saudacao {
+    margin-bottom: 40px;
+  }
+
+  #botoes_TelaInicial {
+    flex-direction: column; /* Empilha os cartões verticalmente no mobile */
+    align-items: center;
+    gap: 32px;
+  }
+
+  .card-acao {
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .card-acao button {
+    height: 52px; /* Ligeiramente menor em telas de celulares */
+  }
+}
