@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export const api = axios.create({
-    baseURL: 'https://nutri-ai-qp2b.onrender.com',
+    baseURL: import.meta.env.VITE_BACKEND_URL,
 });
