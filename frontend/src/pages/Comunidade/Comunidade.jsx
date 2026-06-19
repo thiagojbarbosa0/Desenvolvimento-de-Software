@@ -1,6 +1,8 @@
 import './Comunidade.css';
 import { useState, useEffect } from 'react';
 
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
+
 function Comunidade() {
   const [abaAtiva, setAbaAtiva] = useState('Para você');
   const [posts, setPosts] = useState([]);
@@ -16,7 +18,7 @@ function Comunidade() {
   const carregarPosts = async () => {
     try {
       setCarregando(true);
-      const url = `http://0.0.0.0:8000/api/v1/posts?filtro=${encodeURIComponent(abaAtiva)}&user_id=${userIdLogado}`;
+      const url = `${API_BASE_URL}/api/v1/posts?filtro=${encodeURIComponent(abaAtiva)}&user_id=${userIdLogado}`;
       const response = await fetch(url);
       if (response.ok) {
         const dados = await response.json();
@@ -39,7 +41,7 @@ function Comunidade() {
     if (!novoPostTexto.trim()) return;
 
     try {
-      const response = await fetch('http://0.0.0.0:8000/api/v1/posts', {
+      const response = await fetch('${API_BASE_URL}/api/v1/posts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userIdLogado, conteudo: novoPostTexto }),

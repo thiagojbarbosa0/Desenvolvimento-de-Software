@@ -35,7 +35,7 @@ app = FastAPI(title="NutriFlow API", version="1.0.0")
 CORS_WHITELIST = [
     # DESENVOLVIMENTO LOCAL (localhost em qualquer porta)
     # Aceita: http://localhost:3000, http://127.0.0.1:5173, etc
-    r"^https?://(0\.0\.0\.0|127\.0\.0\.1):.*$",
+    r"^http?://(0\.0\.0\.0|127\.0\.0\.1):.*$",
     
     # PRODUÇÃO - SEU FRONTEND NO RENDER
     production_url,
