@@ -57,7 +57,7 @@ function MinhaDieta() {
     setTituloModal(tituloPrato);
 
     try {
-      const response = await fetch('http://localhost:3000/api/receita-inteligente', {
+      const response = await fetch('http://0.0.0.0:3000/api/receita-inteligente', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

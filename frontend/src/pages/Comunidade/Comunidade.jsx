@@ -16,7 +16,7 @@ function Comunidade() {
   const carregarPosts = async () => {
     try {
       setCarregando(true);
-      const url = `http://localhost:8000/api/v1/posts?filtro=${encodeURIComponent(abaAtiva)}&user_id=${userIdLogado}`;
+      const url = `http://0.0.0.0:8000/api/v1/posts?filtro=${encodeURIComponent(abaAtiva)}&user_id=${userIdLogado}`;
       const response = await fetch(url);
       if (response.ok) {
         const dados = await response.json();
@@ -39,7 +39,7 @@ function Comunidade() {
     if (!novoPostTexto.trim()) return;
 
     try {
-      const response = await fetch('http://localhost:8000/api/v1/posts', {
+      const response = await fetch('http://0.0.0.0:8000/api/v1/posts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userIdLogado, conteudo: novoPostTexto }),
@@ -58,7 +58,7 @@ function Comunidade() {
     if (!userId) return;
 
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/posts/${postId}/like`, {
+      const response = await fetch(`http://0.0.0.0:8000/api/v1/posts/${postId}/like`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userId })
@@ -78,7 +78,7 @@ function Comunidade() {
     if (!novoComentarioTexto.trim()) return;
 
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/posts/${postId}/comment`, {
+      const response = await fetch(`http://0.0.0.0:8000/api/v1/posts/${postId}/comment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userIdLogado, comentario: novoComentarioTexto }),
